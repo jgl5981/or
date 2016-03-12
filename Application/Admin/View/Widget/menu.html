@@ -1,0 +1,43 @@
+<volist name="dataList" id="vo">
+    <li>
+        <a href="#" data-url="">
+            <if condition="empty($vo['icon']) nheq true">
+                <i class="{$vo.icon}" title="{$vo.menu_name}"></i>
+            </if>
+            <span class="nav-label">{$vo.menu_name}</span>
+            <if condition="count($vo['child_menu']) gt 0">
+                <span class="fa arrow"></span>
+            </if>
+            <if condition="count($vo['child_menu']) gt 0">
+                <ul class="nav nav-second-level">
+                    <volist name="vo['child_menu']" id="voo">
+                        <li>
+                            <if condition="count($voo['child_menu']) elt 0">
+                                <a href="#"
+                                   data-url="{:U($voo['like_list'][0].'/'.$voo['like_list'][1].'/'.$voo['like_list'][2])}">
+                                    {$voo.menu_name}
+                                </a>
+                                <else/>
+                                <a href="#"
+                                   data-url="{:U($voo['like_list'][0].'/'.$voo['like_list'][1].'/'.$voo['like_list'][2])}">
+                                    {$voo.menu_name}
+                                </a>
+                            </if>
+                        </li>
+                    </volist>
+                </ul>
+            </if>
+        </a>
+    </li>
+</volist>
+<script>
+    $(function () {
+        $("#side-menu li a").on('click', function (event) {
+            event.preventDefault();
+            $this = $(this);
+            var url = $this.attr("data-url");
+            if (url == undefined || url == "") return;
+            util.reloadContent(url);
+        });
+    })
+</script>

@@ -1,0 +1,110 @@
+<script type="text/javascript">
+
+    $(function () {
+        //原始值
+        var sourceVal = $("#menu_link").val(),
+                $menuLink = $("#menu_link");
+
+        $("input[name='is_enable_link']").on("click", function () {
+            var radio = $(this);
+            var val = radio.val() == "1";
+            if (val) {
+                $menuLink.val(sourceVal);
+                $menuLink.attr("disabled", false);
+            } else {
+                $menuLink.val("");
+                $menuLink.attr("disabled", true);
+            }
+        });
+
+        $menuLink.change(function () {
+            if ($(this).val() !== "") $linkReply.removeClass("hidden");
+        });
+
+        if ($("input[name='is_enable_link']:checked").val() == "0") {
+            $menuLink.attr("disabled", true);
+        }
+
+        $("#icon").on('keyup', function (event) {
+            $input = $(event.target);
+            $input.parent().find("i")
+                    .removeAttr('class').addClass($input.val() + " fa-lg");
+        });
+    });
+</script>
+<div class="animated fadeInRight">
+    <div class="search-form"><h4>编辑权限菜单</h4></div>
+    <div class="ibox-content">
+        <form method="post" action="{:U('doEdit')}" , data-ajax="true" data-ajax-success="ajaxJsonComplete"
+              data-ajax-failure="ajaxJsonComplete" class="form-horizontal" id="authority_edit">
+            <div class="form-group">
+                <label class="col-sm-3 control-label">菜单名称：</label>
+
+                <div class="col-sm-9">
+                    <input type="hidden" name="id" value="{$info.id}"/>
+                    <input type="text" name="menu_name" class="form-control" value="{$info.menu_name}"/>
+                </div>
+            </div>
+            <div class="hr-line-dashed"></div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">图标样式：</label>
+                <div class="col-sm-9">
+                    <input type="text" name="icon" class="form-control" value="{$info.icon}" id="icon" style="width:150px;float:left"/>
+                    <i style="margin: 10px" class="{$info.icon}"></i>
+                </div>
+            </div>
+            <div class="hr-line-dashed"></div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">排序：</label>
+
+                <div class="col-sm-9">
+                    <input type="text" name="no" class="form-control" value="{$info.no}"/>
+                </div>
+            </div>
+            <div class="hr-line-dashed"></div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">上级菜单：</label>
+                <div class="col-sm-9">
+                    <select name="parent_id" class="form-control">
+                        <volist name="info[parent_list]" id="vo">
+                            <option  value="{$vo.id}" {$vo[id] == $info[parent_id] ? "selected=selected" : ""} >{$vo.menu_name}</option>
+                        </volist>
+                    </select>
+                </div>
+            </div>
+            <div class="hr-line-dashed"></div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">链接菜单：</label>
+
+                <div class="col-sm-9">
+                    <div class="radio-inline">
+                        <label> <input type="radio" name="is_enable_link" class="radio" value="1"
+                                       {$info[is_enable_link]== 1 ? "checked=checked" : ""} />
+                            是
+                        </label>
+                    </div>
+                    <div class="radio-inline">
+                        <label>
+                            <input type="radio" name="is_enable_link" class="radio" value="0"
+                                   {$info[is_enable_link]== 0 ? "checked=checked" : ""}/>
+                            否
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="hr-line-dashed"></div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">菜单地址：</label>
+
+                <div class="col-sm-9">
+                    <input type="text" name="link" class="form-control" placeholder="/" id="menu_link" value="{$info.link}"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-12 col-sm-offset-6">
+                    <button type="submit" class="btn btn-primary">保存</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,87 @@
+<if condition="count($list) eq 0">
+    <div class='alert alert-warning text-center' role='alert'>亲，没有查到数据哦。换个条件试试？</div>
+    <else/>
+
+    <table class="table table-striped table-hover">
+        <thead>
+        <tr>
+            <th>序号</th>
+            <th>昵称</th>
+            <th>操作</th>
+            <th class="text-center">
+                <a href="#" data-url="{:U('add')}" class="btn btn-primary btn-sm" title="添加管理员">
+                    <i class="fa fa-plus">Add</i>
+                </a>
+            </th>
+        </tr>
+        </thead>
+        <tbody>
+        <volist name="list" id="vo">
+            <tr>
+                <td>{$i}</td>
+                <td>
+                    <a href="#" data-url="{:U('add')}">{$vo.name}</a>
+                </td>
+                <td colspan="2">
+                    <a href="#" class="btn btn-primary btn-sm" data-reset="true" data-name="{$vo.name}"
+                       data-url="{:U('doResetPassword?id='.$vo['id'])}">
+                        <i class="fa fa-key">RestPass</i></a>
+                    <a href="#" class="btn btn-danger btn-sm" data-del="true" data-name="{$vo.name}"
+                       data-url="{:U('doDelete?id='.$vo['id'])}">
+                        <i class="fa fa-trash">Delete</i></a>
+                </td>
+            </tr>
+        </volist>
+        </tbody>
+    </table>
+    <div id="pager" class="text-center"></div>
+    <script>
+        $(function () {
+            $("#pager").ajaxPager({
+                formId: "user_search_form",
+                page_count: "{$page_count}",
+                page_index: "{$page_index}"
+            })
+        });
+    </script>
+    <script>
+        $(function () {
+            $("table a").on("click", function (event) {
+                var $this = $(this);
+                var url = $this.attr("data-url");
+                if (url == undefined || url == "") return;
+                var del = $this.attr("data-del");
+                var reset = $this.attr("data-reset");
+                if (del && del === "true") {
+                    $.confirm({
+                        title: "用户操作提示",
+                        text: "确定要删除用户[" + $this.attr("data-name") + "]吗？",
+                        confirm: function (button) {
+                            util.reloadContent(url, null, $("#user_search_target"));
+                        },
+                        cancel: function (button) {
+                            util.tips("取消删除用户操作。", "info");
+                        },
+                        confirmButton: "确定",
+                        cancelButton: "取消"
+                    });
+                } else if (reset && reset === "true") {
+                    $.confirm({
+                        title: "用户操作提示",
+                        text: "确定要重置用户[" + $this.attr("data-name") + "]的密码吗？",
+                        confirm: function (button) {
+                            util.reloadContent(url, null, $("#user_search_target"));
+                        },
+                        cancel: function (button) {
+                            util.tips("取消用户重置密码操作。", "info");
+                        },
+                        confirmButton: "确定",
+                        cancelButton: "取消"
+                    });
+                } else {
+                    util.reloadContent(url, null, $("#user_manager_target"));
+                }
+            });
+        });
+    </script>
+</if>

@@ -1,0 +1,20 @@
+<div class="animated fadeInRight">
+    <div class="search-form"><h4>新增管理员</h4></div>
+    <div class="ibox-content">
+        <form id="userAdd" action="{:U('doAdd')}" data-ajax="true" data-ajax-success="ajaxJsonComplete"
+              data-ajax-failure="ajaxJsonComplete" method="post">
+            <div class="form-group">
+                <span class="control-label col-md-2">用户名:</span>
+
+                <div class="col-md-10">
+                    <input name="name" type="text" class="form-control"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <button type="submit" class="btn btn-primary">新增</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

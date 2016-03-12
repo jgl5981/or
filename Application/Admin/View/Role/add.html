@@ -1,0 +1,122 @@
+<div class="animated fadeInRight">
+    <div class="search-form text-center"><h4>新增用户角色</h4></div>
+    <div class="ibox-content">
+        <form id="userAdd" action="{:U('doAdd')}" data-ajax="true" data-ajax-success="ajaxJsonComplete"
+              data-ajax-failure="ajaxJsonComplete" method="post" class="form-horizontal">
+            <div class="form-group">
+                <div class="control-label col-md-2">角色名称</div>
+                <div class="col-md-10">
+                    <input name="name" class="form-control"/>
+                </div>
+            </div>
+            <div class="hr-line-dashed"></div>
+            <div class="form-group">
+                <div class="control-label col-md-2">授权菜单</div>
+                <div class="col-md-10">
+                    <textarea name="authority_menu" class="form-control" id="authority_menu" placeholder="请从下面的树型图选择"
+                              disabled="disabled"/>
+                    <input type="hidden" name="authority_id" id="authority_id"/>
+                    <!-- begin jstree -->
+                    <div class="input-group">
+                        <input type="text" placeholder="搜索菜单" class="form-control" id="jstree-search">
+                    </div>
+                    <div class="well">
+                        <div id="jstree-tree"></div>
+                    </div>
+                    <!-- end jstree-->
+                </div>
+            </div>
+            <div class="hr-line-dashed"></div>
+            <div class="form-group">
+                <div class="control-label col-md-2">角色描述</div>
+                <div class="col-md-10">
+                    <textarea name="descript" class="form-control" rows="5"/>
+                </div>
+            </div>
+            <div class="hr-line-dashed"></div>
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <button type="submit" class="btn btn-primary">新增</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<script>
+    $(function () {
+        var jstreeContainer = "#jstree-tree",
+                jstreeSearcher = "#jstree-search",
+                authorityMenu = "#authority_menu",
+                authorityMenuId = "#authority_id",
+                options = {
+                    'core': {
+                        'check_callback': true,
+                        'data': {
+                            "url": '{:U("Authority/menuList")}',
+                            "dataType": 'json',
+                            "method": 'POST',
+                        }
+                    },
+                    'plugins': ['types', 'search', 'checkbox'],
+                    'checkbox': {
+                        'keep_selected_style': false,
+                        "tie_selection": false
+                    },
+                    "search": {
+                        "show_only_matches": true
+                    },
+                    'types': {
+                        'default': {
+                            'icon': 'fa fa-folder'
+                        },
+                        'html': {
+                            'icon': 'fa fa-file-code-o'
+                        },
+                        'svg': {
+                            'icon': 'fa fa-file-picture-o'
+                        },
+                        'css': {
+                            'icon': 'fa fa-file-code-o'
+                        },
+                        'img': {
+                            'icon': 'fa fa-file-image-o'
+                        },
+                        'js': {
+                            'icon': 'fa fa-file-text-o'
+                        }
+                    }
+                };
+        //绑定jstree
+        $(jstreeContainer).jstree(options)
+                .on("check_node.jstree", get_bottom_checked_node)
+                .on("uncheck_node.jstree", get_bottom_checked_node);
+
+        //获取所有选中的子节点
+        function get_bottom_checked_node(selected, event) {
+            var objNodes = $.jstree.reference(jstreeContainer).get_bottom_checked(true);
+            var nodes = [];
+            var nodeNames = [];
+            $(objNodes).each(function (i, e) {
+                nodes.push(e.id);
+                nodeNames.push(e.text);
+            });
+            $(authorityMenu).val(nodeNames.join('、'));
+            $(authorityMenuId).val(nodes.join(','));
+        }
+
+        //绑定搜索事件
+        var to = undefined;
+        $(jstreeSearcher).keyup(function () {
+            if (to) {
+                clearTimeout(to);
+            }
+            to = setTimeout(function () {
+                var v = $(jstreeSearcher).val();
+                $.jstree.defaults.search.show_only_matches = true;
+                $(jstreeContainer).jstree(true).search(v);
+            }, 250);
+        });
+
+        //$('form').validateBootstrap(true);
+    });
+</script>

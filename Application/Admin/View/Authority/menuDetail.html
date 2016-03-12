@@ -1,0 +1,45 @@
+<div class="animated fadeInRight">
+    <h4>权限菜单详细</h4>
+    <table class="table">
+        <tr>
+            <th class="text-right">菜单名称：</th>
+            <td>{$info.menu_name}</td>
+        </tr>
+
+        <if condition="isset($info['icon'])">
+            <tr>
+                <th class="text-right">图标样式：</th>
+                <td><code>{$info.icon}</code>&nbsp;<i class="@Model.Icon"></i></td>
+            </tr>
+            <else/>
+            <tr>
+                <th class="text-right">图标样式：</th>
+                <td></td>
+            </tr>
+        </if>
+        <tr>
+            <th class="text-right">上级菜单：</th>
+            <td>{$info.parent_menu_name}</td>
+        </tr>
+        <tr>
+            <th class="text-right">链接菜单：</th>
+            <td>
+                <if condition="$info['is_enable_link']">
+                    <i class="fa fa-check text-navy"></i>
+                    <else/>
+                    <i class="fa fa-close text-navy"></i>
+                </if>
+            </td>
+        </tr>
+        <tr>
+            <th class="text-right">菜单地址：</th>
+            <td>{$info.link}</td>
+        </tr>
+        <tr>
+            <th class="text-right">创建时间：</th>
+            <td>{$info.create_time}</td>
+        </tr>
+
+    </table>
+</div>
+

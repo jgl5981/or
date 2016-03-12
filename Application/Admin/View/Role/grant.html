@@ -1,0 +1,133 @@
+<div class="row animated fadeInRight">
+    <div class="search-form">
+        <h4>勾选菜单授权</h4>
+    </div>
+    <div class="ibox-content">
+        <!-- begin jstree -->
+        <div class="input-group">
+            <input type="text" placeholder="搜索菜单" class="form-control" id="jstree-search">
+            <input type="hidden" name="role_id" value="{$id}" id="role_id"/>
+        </div>
+        <div class="well">
+            <div id="jstree-tree"></div>
+        </div>
+        <!-- end jstree-->
+    </div>
+</div>
+<script>
+    $(function () {
+        var jstreeContainer = "#jstree-tree",
+                jstreeSearcher = "#jstree-search",
+                model = "{$authorityIds}",
+                options = {
+                    'core': {
+                        'check_callback': true,
+                        'data': {
+                            "url": '{:U("Authority/menuList")}',
+                            "dataType": 'json',
+                            "method": 'POST',
+                        }
+                    },
+                    'plugins': ['types', 'search', 'checkbox'],
+                    'checkbox': {
+                        'keep_selected_style': false,
+                        "tie_selection": false
+                    },
+                    "search": {
+                        "show_only_matches": true
+                    },
+                    'types': {
+                        'default': {
+                            'icon': 'fa fa-folder'
+                        },
+                        'html': {
+                            'icon': 'fa fa-file-code-o'
+                        },
+                        'svg': {
+                            'icon': 'fa fa-file-picture-o'
+                        },
+                        'css': {
+                            'icon': 'fa fa-file-code-o'
+                        },
+                        'img': {
+                            'icon': 'fa fa-file-image-o'
+                        },
+                        'js': {
+                            'icon': 'fa fa-file-text-o'
+                        }
+                    }
+                };
+
+        //绑定jstree
+        $(jstreeContainer).jstree(options)
+                .on("ready.jstree", initAllchecked);
+
+        //选择节点
+        function get_checked_node(selected, event) {
+            //采用全量覆盖
+            var checked = $.jstree.reference(jstreeContainer).get_checked(true);
+            var grant = [];
+            $(checked).each(function (i, e) {
+                if (e.id != "-1")
+                    grant.push(e.id);
+            });
+            //var grant = event.node.id;
+            //var child = event.node.children;
+            //if (child.length > 0) grant = child.join(',');
+
+            var data = { roleId: $("#role_id").val(), grantList: grant.join(',') };
+            util.ajax({
+                url: '{:U("doGrant")}',
+                data: data,
+                success: util.ajaxJsonComplete,
+                error: util.ajaxJsonComplete
+            });
+        }
+
+        function initAllchecked() {
+            if (typeof model == "string" && model != "") {
+                var grant = model.split(','), node, childrens, tree = $.jstree.reference(jstreeContainer);
+                for (var i in grant) {
+                    node = tree.get_node(grant[i]);
+                    //获取当前节点下的所有子节点
+                    //由于节点没有展开时使用get_children_dom，无法获取到子节点，这里需要先展开节点
+                    checknode(node, grant, tree);
+                }
+            }
+            //初始化完成后绑定选中和未选择中事件
+            $(jstreeContainer).on("check_node.jstree", get_checked_node)
+                    .on("uncheck_node.jstree", get_checked_node);
+        }
+
+        function checknode(node, grant, tree) {
+            tree.open_node(node);
+            var $childrens = tree.get_children_dom(node);
+            if ($childrens.length > 0) {
+                $childrens.each(function (i, el) {
+                    var cnode = tree.get_node(el);
+                    var id = cnode.id;
+                    if ($.inArray(id, grant) > 0) {
+                        checknode(cnode, grant, tree);
+                    }
+                });
+            }
+            else {
+                if (!tree.is_checked(node))
+                    tree.check_node(node);
+            }
+            if (!tree.is_closed(node))
+                tree.close_node(node);
+        }
+
+        //绑定搜索事件
+        var to = undefined;
+        $(jstreeSearcher).keyup(function () {
+            if (to) { clearTimeout(to); }
+            to = setTimeout(function () {
+                var v = $(jstreeSearcher).val();
+                $.jstree.defaults.search.show_only_matches = true;
+                $(jstreeContainer).jstree(true).search(v);
+            }, 250);
+        });
+    });
+</script>

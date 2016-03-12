@@ -1,0 +1,42 @@
+<div class="row animated fadeInRight">
+    <div class="search-form"><h5>分配角色</h5></div>
+    <div class="ibox-content">
+        <volist name="dataList" id="vo">
+            <div class="row">
+                <div class="col-sm-@(12/column)">
+                    <div class="checkbox i-checks">
+                        <label title="{$vo.descript}">
+                            <input type="checkbox"
+                                   data-remove-url="{:U('doRemoveGrantRole', array('user_id'=>$vo['userId'],'role_id'=>$vo['id']))}"
+                                   data-grant-url="{:U('doGrantRole', array('user_id'=>$vo['userId'],'role_id'=>$vo['id']))}"
+                                   value="{$vo['id']}" title="{$vo.descript}" {$vo['checked'] == "true" ? "checked=checked" : ""} > {$vo.name}
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </volist>
+    </div>
+</div>
+<script>
+    $(function () {
+        $("#user_grant_target input")
+                .iCheck({
+                    checkboxClass: 'icheckbox_square-green',
+                })
+                .on('ifChecked', function (event) {
+                    var elem = event.target;
+                    var url = $(elem).attr("data-grant-url") || undefined;
+                    if (url) {
+                        util.ajax({url: url, success: util.ajaxJsonComplete, error: util.ajaxJsonComplete, method : "GET"});
+                    }
+                })
+                .on('ifUnchecked', function (event) {
+                    var elem = event.target;
+                    var url = $(elem).attr("data-remove-url") || undefined;
+                    if (url) {
+                        util.ajax({url: url, success: util.ajaxJsonComplete, error: util.ajaxJsonComplete, method : "GET"});
+                    }
+                });
+    });
+
+</script>

@@ -1,0 +1,26 @@
+<div class="animated fadeInRight">
+    <div class="search-form"><h4>编辑用户角色</h4></div>
+    <div class="ibox-content">
+        <form id="userAdd" action="{:U('doEdit')}" data-ajax="true" data-ajax-success="ajaxJsonComplete"
+              data-ajax-failure="ajaxJsonComplete" method="post" class="form-horizontal">
+            <div class="form-group">
+                <div class="control-label col-md-2">角色名称</div>
+                <div class="col-md-10">
+                    <input type="hidden" name="id" value="{$info.id}"/>
+                    <input name="name" class="form-control" value="{$info.name}"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="control-label col-md-2">角色描述</div>
+                <div class="col-md-10">
+                    <textarea name="descript" class="form-control" rows="5" >{$info.descript}</textarea>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <button type="submit" class="btn btn-primary">保存</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

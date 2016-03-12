@@ -1,0 +1,88 @@
+<script type="text/javascript">
+    $(function () {
+
+        $("input[name='is_enable_link']").on("click", function () {
+            var radio = $(this);
+            var val = radio.val() == "1";
+            if (val) {
+                $("#menu_link").attr("disabled", false);
+            } else {
+                $("#menu_link").val("");
+                $("#menu_link").attr("disabled", true);
+            }
+        });
+    });
+</script>
+<div class="animated fadeInRight">
+    <div class="search-form"><h4>新增权限菜单</h4></div>
+    <div class="ibox-content">
+        <form method="post" action="{:U('doAdd')}" , data-ajax="true" data-ajax-success="ajaxJsonComplete"
+              data-ajax-failure="ajaxJsonComplete" class="form-horizontal" id="authority_Add">
+            <div class="form-group">
+                <label class="col-sm-3 control-label">菜单名称：</label>
+
+                <div class="col-sm-9">
+                    <input type="text" name="menu_name" class="form-control"/>
+                </div>
+            </div>
+            <div class="hr-line-dashed"></div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">图标样式：</label>
+                <div class="col-sm-9">
+                    <input name="icon" class="form-control" id="icon" style="width:150px;float:left"/>
+                    <i style="margin: 10px"></i>
+                </div>
+            </div>
+            <div class="hr-line-dashed"></div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">上级菜单：</label>
+                <div class="col-sm-9">
+                    {$info.parent_name}
+                    <input type="hidden"  name="parent_id" value="{$info.parent_id}"/>
+                </div>
+            </div>
+            <div class="hr-line-dashed"></div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">链接菜单：</label>
+
+                <div class="col-sm-9">
+                    <div class="radio-inline">
+                        <label>
+                            <input type="radio" checked="checked" class="radio" name="is_enable_link" value=1>
+                            是
+                        </label>
+                    </div>
+                    <div class="radio-inline">
+                        <label>
+                            <input type="radio"  class="radio" name="is_enable_link" value=0>
+                            否
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="hr-line-dashed"></div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">菜单地址：</label>
+
+                <div class="col-sm-9">
+                    <input name="link" type="text" class="form-control" placeholder="/" id="menu_link"/>
+                    <i class="fa fa-mail-reply hidden" id="link_reply" style="cursor: pointer;" title="撤销"></i>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-12 col-sm-offset-6">
+                    <button type="submit" class="btn btn-primary">新增</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<script>
+    $(function () {
+        $("#icon").on('keyup', function (event) {
+            $input = $(event.target);
+            $input.parent().find("i")
+                    .removeAttr('class').addClass($input.val() + " fa-lg");
+        });
+    });
+</script>

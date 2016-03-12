@@ -1,0 +1,46 @@
+<div class="row">
+    <div class="ibox float-e-margins">
+        <div class="ibox-title">
+            <h5>角色分配</h5>
+        </div>
+        <div class="ibox-content">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <form action="{:U('content')}" id="user_search_form" data-ajax="true"
+                                  data-ajax-update="#user_search_target">
+                                <div class="input-group">
+                                    <input type="text" id="name" name="name" class="input-sm form-control"
+                                           placeholder="请输入用户名搜索"/>
+                                    <span class="input-group-btn">
+                                        <button type="submit" onclick="clearGrant();" class="btn btn-primary btn-sm">
+                                            搜索
+                                        </button>
+                                    </span>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="row" id="user_search_target">
+                    </div>
+                </div>
+                <div class="col-md-6" id="user_grant_target">
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(function () {
+        $("#user_search_form").submit();
+    })
+
+    function refresh() {
+        $("#user_search_form").submit();
+    }
+    function clearGrant() {
+        $("#user_grant_target").empty();
+    }
+</script>

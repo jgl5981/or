@@ -1,0 +1,14 @@
+<div id="roleList">
+</div>
+
+<script>
+    $(function () {
+        refresh();
+    })
+    function refresh() {
+        util.reloadContent('{:U("content")}', null, $("#roleList"), function () {
+            $('[data-toggle="tooltip"]').tooltip();
+        });
+    }
+</script>
+

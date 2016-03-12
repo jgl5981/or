@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="renderer" content="webkit">
+    <title>{$Think.const.TITLE} - 主页</title>
+    <meta name="keywords" content="{$Think.const.KEYWORD}">
+    <meta name="description" content="{$Think.const.DESCRIPTION}">
+    <!-- 基本的脚本-->
+    <script src="__JS__/jquery-1.10.2.js"></script>
+    <script src="__JS__/bootstrap.min.js?v=3.3.0"></script>
+    <!--自定义主脚本 -->
+    <script src="__JS__/hplus.js?v=2.0.0"></script>
+    <!--分页控件脚本-->
+    <script src="__JS__/jq-pager.js"></script>
+    <!--模态窗口脚本-->
+    <script src="__JS__/jq-modal.js"></script>
+    <!--ajax异步提交插件 -->
+    <script src="__JS__/jquery.unobtrusive-ajax.js"></script>
+    <!--遮障层插件-->
+    <script src="__JS__/jquery.blockUI.js"></script>
+    <!-- 基本的样式 -->
+    <link href="__CSS__/bootstrap.min.css?v=3.3.0" rel="stylesheet">
+    <!--节点加入动画效果样式-->
+    <link href="__CSS__/animate.css" rel="stylesheet">
+    <!--后台主样式 -->
+    <link href="__CSS__/style.css?v=2.1.0" rel="stylesheet">
+    <!-- confirm插件 -->
+    <script src="__PLUGIN__/jquery.confirm-2.5.0/jquery.confirm.js"></script>
+    <!-- 弹出层插件 -->
+    <script src="__PLUGIN__/toastr/toastr.min.js"></script>
+    <link href="__PLUGIN__/toastr/toastr.css" rel="stylesheet">
+    <!-- 树插件 -->
+    <script src="__PLUGIN__/jstree-3.1.1/jstree.min.js"></script>
+    <link href="__PLUGIN__/jstree-3.1.1/themes/default/style.min.css" rel="stylesheet">
+    <!--Icheck插件-->
+    <script src="__PLUGIN__/icheck-1.0.2/icheck.min.js"></script>
+    <link href="__PLUGIN__/icheck-1.0.2/skins/all.css" rel="stylesheet">
+    <!--图标样式-->
+    <link href="__FONT__/css/font-awesome.css?v=4.3.0" rel="stylesheet">
+    <!-- 左侧导航条脚本 -->
+    <script src="__PLUGIN__/metisMenu/jquery.metisMenu.js"></script>
+    <!-- 自己写的脚本块 -->
+</head>
+<body>
+<div id="wrapper">
+    <nav class="navbar-default navbar-static-side" role="navigation">
+        <div class="sidebar-collapse">
+            <ul class="nav" id="side-menu">
+                {:W('Header/Header')}
+                {:W('Menu/Menu')}
+            </ul>
+        </div>
+    </nav>
+    <div id="page-wrapper" class="gray-bg dashbard-1">
+        <div class="row border-bottom">
+            <nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0">
+                <div class="navbar-header">
+                    <a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="#"><i class="fa fa-bars"></i>
+                    </a>
+                </div>
+                <ul class="nav navbar-top-links navbar-right">
+                    <li>
+                        <a href="@Url.Action(" Logout","Home")">
+                        <i class="fa fa-sign-out"></i> 退出
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+        <div id="template_content" class="wrapper wrapper-content">
+           <!-- <block name="layout"></block>-->
+        </div>
+    </div>
+</div>
+</body>
+</html>

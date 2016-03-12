@@ -1,0 +1,9 @@
+<extend name="Public/layout"/>
+<block name="layout">
+    <div class="row  border-bottom white-bg dashboard-header">
+        <volist name="list" id="vo">
+            {$vo.id}:{$vo.name}<br/>
+        </volist>
+
+    </div>
+</block>
