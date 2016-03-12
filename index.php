@@ -20,6 +20,7 @@ define('APP_DEBUG',True);
 // 定义应用目录
 define('APP_PATH','./Application/');
 
+
 //自定义常量
 //一页的数量
 define('PAGE_SIZE',10);

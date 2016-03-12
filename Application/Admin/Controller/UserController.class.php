@@ -11,6 +11,7 @@ class UserController extends BaseController
         $this->display();
     }
 
+
     public function content()
     {
         $page_index = I("page_index");
