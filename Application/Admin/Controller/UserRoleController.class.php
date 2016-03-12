@@ -4,6 +4,10 @@ namespace Admin\Controller;
 use Admin\Common\AjaxJson;
 use Admin\Model;
 
+/**
+ * 用户角色授权
+ * @package Admin\Controller
+ */
 class UserRoleController extends BaseController
 {
     public function index()
@@ -56,7 +60,7 @@ class UserRoleController extends BaseController
         $this->display();
     }
 
-    public function  doGrantRole()
+    public function doGrantRole()
     {
         $data["role_id"] = I("role_id");
         $data["user_id"] = I("user_id");

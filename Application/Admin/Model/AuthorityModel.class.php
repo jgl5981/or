@@ -110,7 +110,7 @@ class AuthorityModel extends Model
      */
     public function updateNode()
     {
-        $data =$this->data();
+        $data = $this->data();
         try {
             $id = $data["id"];
             $parentId = $data["parent_id"];
@@ -126,7 +126,7 @@ class AuthorityModel extends Model
             $this->where("id=$id")->save($data);
             $data->commit();
             return true;
-        } catch( \Exception $e) {
+        } catch (\Exception $e) {
             $this->rollback();
             return false;
         }
@@ -136,11 +136,9 @@ class AuthorityModel extends Model
 
     public function getAuthorityByuserId($userId)
     {
-        $list = $this->query("SELECT a.* FROM or_authority a
-                      INNER JOIN or_authority_grant g ON a.`id` = g.`authority_id`
-                      INNER JOIN or_role r ON r.`id` = g.`role_id`
-                      INNER JOIN or_user_role l ON l.`role_id` = r.`id`   WHERE l.`user_id` = %d", $userId);
-
+        $list = $this->query(" SELECT * FROM or_authority o WHERE o.`id`
+	    IN(SELECT DISTINCT(g.`authority_id`) FROM   or_authority_grant g
+	    INNER JOIN or_user_role r ON g.`role_id` = r.`role_id` WHERE r.`user_id` = %d) ORDER BY o.`no` ASC", $userId);
         return $list;
 
     }

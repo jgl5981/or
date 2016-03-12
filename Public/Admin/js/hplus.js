@@ -157,9 +157,9 @@ function WinMove() {
                         beforeSend: function () {
                             $.blockUI({
                                 message: '<i class="fa fa-spinner fa-pulse"></i> 努力加载中，请稍等...',
-                                css: { width: '20%', left: '40%' },
+                                css: { width: '15%', left: '40%' },
                                 overlayCSS: {
-                                    backgroundColor: '#fff',
+                                    backgroundColor: '#293846',
                                     opacity: 0.6,
                                     cursor: 'wait'
                                 }

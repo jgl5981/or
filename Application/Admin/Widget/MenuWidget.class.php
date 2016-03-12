@@ -3,6 +3,11 @@ namespace Admin\Widget;
 
 use Think\Controller;
 
+
+/**
+ * 提供管理左侧导航插件
+ * @package Admin\Widget
+ */
 class MenuWidget extends \Admin\Controller\BaseController
 {
     public function menu()
@@ -20,7 +25,7 @@ class MenuWidget extends \Admin\Controller\BaseController
         $this->display("Widget:menu");
     }
 
-    public function  createChildren($authority, $authorityList)
+    private function  createChildren($authority, $authorityList)
     {
         $nextList = array();
         foreach ($authorityList as $authorityItem) {

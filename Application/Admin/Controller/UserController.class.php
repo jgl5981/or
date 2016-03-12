@@ -4,13 +4,17 @@ namespace Admin\Controller;
 use Admin\Common\AjaxJson;
 use Admin\Model;
 
+
+/**
+ * 用户管理
+ * @package Admin\Controller
+ */
 class UserController extends BaseController
 {
     public function index()
     {
         $this->display();
     }
-
 
     public function content()
     {
@@ -59,7 +63,7 @@ class UserController extends BaseController
             $info = $user->where("id=$id")->find();
             $info["password"] = md5(1);
             $n = $user->save($info);
-            $this->ajaxReturn(array("code" => 1, "message" => "密码重置成功", "callback" => "refreshList",
+            $this->ajaxReturn(array("code" => 1, "message" => "密码重置成功", "callback" => "refresh",
                 "data" => array("message" => $message = "您的用户名：" . $info["name"] . ", 密码：1。")));
         }
     }

@@ -5,7 +5,7 @@ namespace Admin\Controller;
 use Admin\Model;
 
 /**
- * Class AuthorityController
+ *  角色管理
  * @package Admin\Controller
  */
 class RoleController extends BaseController
@@ -112,11 +112,6 @@ class RoleController extends BaseController
                 $this->ajaxReturn(array("code" => 0, "message" => "授权失败！"));
             }
         }
-    }
-
-    public function getParentAuthority()
-    {
-
     }
 
 }

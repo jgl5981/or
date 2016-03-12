@@ -93,7 +93,7 @@
      "foo [link http://www.example.com/]. bar");
 
   MT("vanillaLinkExtension",
-     "foo [link http://www.example.com/index.html] bar");
+     "foo [link http://www.example.com/login.html] bar");
 
   MT("notALink",
      "[comment ```css]",

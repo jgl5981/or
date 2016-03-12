@@ -8,31 +8,27 @@
             <if condition="count($vo['child_menu']) gt 0">
                 <span class="fa arrow"></span>
             </if>
-            <if condition="count($vo['child_menu']) gt 0">
-                <ul class="nav nav-second-level">
-                    <volist name="vo['child_menu']" id="voo">
-                        <li>
-                            <if condition="count($voo['child_menu']) elt 0">
-                                <a href="#"
-                                   data-url="{:U($voo['like_list'][0].'/'.$voo['like_list'][1].'/'.$voo['like_list'][2])}">
-                                    {$voo.menu_name}
-                                </a>
-                                <else/>
-                                <a href="#"
-                                   data-url="{:U($voo['like_list'][0].'/'.$voo['like_list'][1].'/'.$voo['like_list'][2])}">
-                                    {$voo.menu_name}
-                                </a>
-                            </if>
-                        </li>
-                    </volist>
-                </ul>
-            </if>
         </a>
+        <if condition="count($vo['child_menu']) gt 0">
+            <ul class="nav nav-second-level">
+                <volist name="vo['child_menu']" id="voo">
+                    <li>
+                        <a href="#"
+                           data-url="{:U($voo['like_list'][0].'/'.$voo['like_list'][1].'/'.$voo['like_list'][2])}">
+                            <if condition="empty($voo['icon']) nheq true">
+                                <i class="{$voo.icon}" title="{$voo.menu_name}"  style="width:20px;text-align: center"></i>
+                            </if>
+                            {$voo.menu_name}
+                        </a>
+                    </li>
+                </volist>
+            </ul>
+        </if>
     </li>
 </volist>
 <script>
     $(function () {
-        $("#side-menu li a").on('click', function (event) {
+        $(".nav-second-level li a").on('click', function (event) {
             event.preventDefault();
             $this = $(this);
             var url = $this.attr("data-url");

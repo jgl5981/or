@@ -5,7 +5,7 @@ namespace Admin\Controller;
 use Admin\Model;
 
 /**
- * Class AuthorityController
+ *  用户权限查单
  * @package Admin\Controller
  */
 class AuthorityController extends BaseController
@@ -21,7 +21,6 @@ class AuthorityController extends BaseController
         $result = $info->recursive();
         $this->ajaxReturn($result);
     }
-
 
     public function menuDetail()
     {

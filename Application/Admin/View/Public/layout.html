@@ -62,17 +62,27 @@
                 </div>
                 <ul class="nav navbar-top-links navbar-right">
                     <li>
-                        <a href="@Url.Action(" Logout","Home")">
-                        <i class="fa fa-sign-out"></i> 退出
+                        <a href="#"  data-url="{:U('index/logout')}">
+                            <i class="fa fa-sign-out"></i> 退出
                         </a>
                     </li>
                 </ul>
             </nav>
         </div>
         <div id="template_content" class="wrapper wrapper-content">
-           <!-- <block name="layout"></block>-->
         </div>
     </div>
 </div>
+<script>
+    $(function () {
+        $(".navbar-top-links li a").on('click', function (event) {
+            event.preventDefault();
+            $this = $(this);
+            var url = $this.attr("data-url");
+            if (url == undefined || url == "") return;
+            util.reloadContent(url);
+        });
+    })
+</script>
 </body>
 </html>
