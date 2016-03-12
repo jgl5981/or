@@ -1,4 +1,4 @@
-<div id="roleList">
+<div id="content">
 </div>
 
 <script>
@@ -6,9 +6,7 @@
         refresh();
     })
     function refresh() {
-        util.reloadContent('{:U("content")}', null, $("#roleList"), function () {
-            $('[data-toggle="tooltip"]').tooltip();
-        });
+        util.reloadContent('{:U("content")}', null, $("#content"));
     }
 </script>
 

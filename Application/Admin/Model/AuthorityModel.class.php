@@ -10,6 +10,9 @@ use Think\Model;
  */
 class AuthorityModel extends Model
 {
+
+    const TABLE_NAME = "authority";
+
     /**
      * @var array
      */
@@ -71,6 +74,23 @@ class AuthorityModel extends Model
         return $model;
     }
 
+    /**
+     * 删除这个节点以及父节点,以及authority_grant 的关联
+     */
+    public function deleteAuthority($id)
+    {
+        $this->startTrans();
+        try{
+            $n = $this->where("id=$id or parent_id = $id")->delete();
+            $authority_grant = D(AuthorityGrantModel::TABLE_NAME);
+            $n = $authority_grant->where("authority_id = $id")->delete();
+            $this->commit();
+            return true;
+        }catch (\Exception $e) {
+            $this->rollback();
+            return false;
+        }
+    }
 
     /**
      * 添加节点
@@ -86,7 +106,6 @@ class AuthorityModel extends Model
         $this->startTrans();
         try {
             $id = $this->add($data);
-
             $path = "/$id";
             if ($data["parent_id"] != -1) {
                 $parentId = $data["parent_id"];
@@ -134,6 +153,11 @@ class AuthorityModel extends Model
 
     }
 
+    /**
+     * 根据用户ID获取这个用户下的权限列表
+     * @param $userId
+     * @return mixed
+     */
     public function getAuthorityByuserId($userId)
     {
         $list = $this->query(" SELECT * FROM or_authority o WHERE o.`id`

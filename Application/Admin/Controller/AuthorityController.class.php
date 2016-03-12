@@ -74,8 +74,8 @@ class AuthorityController extends BaseController
     {
         $id = I("id");
         $authority = D("Authority");
-        $n = $authority->where("id=$id or parent_id = $id")->delete();
-        if($n){
+        $state = $authority->deleteAuthority($id);
+        if($state){
             $this->ajaxReturn(array("code" => 1, "message" => "删除菜单成功！", "callback" => "refresh"));
         }else{
             $this->ajaxReturn(array("code" => 0, "message" => "删除菜单失败！", "callback" => "refresh"));

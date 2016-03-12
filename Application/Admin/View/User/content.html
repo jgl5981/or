@@ -20,7 +20,7 @@
             <tr>
                 <td>{$i}</td>
                 <td>
-                    <a href="#" data-url="{:U('add')}">{$vo.name}</a>
+                    <a href="#" data-url="{:U('add')}" data-toggle="tooltip"  title="{$vo.name}">{$vo.name}</a>
                 </td>
                 <td colspan="2">
                     <a href="#" class="btn btn-primary btn-sm" data-reset="true" data-name="{$vo.name}"
@@ -57,7 +57,7 @@
                         title: "用户操作提示",
                         text: "确定要删除用户[" + $this.attr("data-name") + "]吗？",
                         confirm: function (button) {
-                            util.reloadContent(url, null, $("#user_search_target"));
+                            util.reloadContent(url, null, $("#content"));
                         },
                         cancel: function (button) {
                             util.tips("取消删除用户操作。", "info");
@@ -70,7 +70,7 @@
                         title: "用户操作提示",
                         text: "确定要重置用户[" + $this.attr("data-name") + "]的密码吗？",
                         confirm: function (button) {
-                            util.reloadContent(url, null, $("#user_search_target"));
+                            util.reloadContent(url, null, $("#content"));
                         },
                         cancel: function (button) {
                             util.tips("取消用户重置密码操作。", "info");
@@ -79,7 +79,7 @@
                         cancelButton: "取消"
                     });
                 } else {
-                    util.reloadContent(url, null, $("#user_manager_target"));
+                    util.reloadContent(url, null, $("#manager_target"));
                 }
             });
         });

@@ -24,9 +24,7 @@ define('APP_PATH','./Application/');
 //自定义常量
 //一页的数量
 define('PAGE_SIZE',10);
-define('TITLE',"网站标题");
-define('KEYWORD',"网站关键字");
-define('DESCRIPTION',"网站描述");
+
 
 // 引入ThinkPHP入口文件
 require './ThinkPHP/ThinkPHP.php';

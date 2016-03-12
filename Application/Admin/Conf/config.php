@@ -9,6 +9,9 @@ return array(
         '__JS__' => __ROOT__ . '/Public/' . MODULE_NAME . '/js',
         '__FONT__' => __ROOT__ . '/Public/' . MODULE_NAME . '/font',
         '__PLUGIN__' => __ROOT__ . '/Public/' . MODULE_NAME . '/plugin',
+        '__TITLE__' => "网站标题",
+        '__KEYWORD__' => "网站关键字",
+        '__DESCRIPTION__' => "网站描述",
 
     ),
     //endregion
@@ -27,6 +30,10 @@ return array(
 
     //region SESSION 和 COOKIE 配置
     'SESSION_PREFIX' => 'or_admin_', //session前缀
-    'COOKIE_PREFIX'  => 'or_admin_', // Cookie前缀 避免冲突
+    'COOKIE_PREFIX' => 'or_admin_', // Cookie前缀 避免冲突
     //endregion
+
+
+
+
 );

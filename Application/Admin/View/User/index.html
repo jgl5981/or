@@ -9,7 +9,7 @@
                     <div class="row">
                         <div class="col-sm-6">
                             <form action="{:U('content')}" id="user_search_form" data-ajax="true"
-                                  data-ajax-update="#user_search_target">
+                                  data-ajax-update="#content">
                                 <div class="input-group">
                                     <input type="text" id="name" name="name" class="input-sm form-control"
                                            placeholder="请输入用户名搜索"/>
@@ -21,10 +21,10 @@
                             </form>
                         </div>
                     </div>
-                    <div class="row" id="user_search_target">
+                    <div class="row" id="content">
                     </div>
                 </div>
-                <div class="col-md-6" id="user_manager_target">
+                <div class="col-md-6" id="manager_target">
                 </div>
             </div>
         </div>
@@ -32,18 +32,21 @@
 </div>
 <script>
     $(function () {
-        $("#user_search_form").submit();
+        util.reloadContent('{:U("content")}', null, $("#content"));
     })
 
     function refresh(data) {
-        $("#user_search_form").submit();
-        if (data) {
-            setTimeout(function () {
-                $("#user_search_target").append("<div class='alert alert-warning text-center' role='alert'>" + data.message + "</div>")
-                        .find(".alert alert-warning text-center")
-                        .remove();
-            }, 1500);
-        }
+        util.reloadContent('{:U("content")}', null, $("#content"), function () {
+
+            if (data) {
+                setTimeout(function () {
+                    $("#content").append("<div class='alert alert-warning text-center' role='alert'>" + data.message + "</div>")
+                            .find(".alert alert-warning text-center")
+                            .remove();
+                }, 1500);
+            }
+        });
+
     }
 </script>
 

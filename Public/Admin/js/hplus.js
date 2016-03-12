@@ -245,6 +245,7 @@ function WinMove() {
                         else {
                             if (target == undefined) {
                                 $("#template_content").html(html);
+
                             }
                             else {
                                 if (typeof target == "string") {

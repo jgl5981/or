@@ -1,7 +1,6 @@
 <?php
 namespace Admin\Controller;
 
-use Admin\Common\AjaxJson;
 use Admin\Model;
 
 
@@ -39,7 +38,6 @@ class UserController extends BaseController
 
     public function doAdd()
     {
-        $ajaxJson = new AjaxJson();
         $user = D("User");
         if (!$user->create()) {
             $this->ajaxReturn(array("code" => 0, "message" => $user->getError()));
@@ -71,10 +69,9 @@ class UserController extends BaseController
     public function doDelete()
     {
         $id = I("id");
-        if (!empty($id)) {
-            $user = M("User");
-
-            $user->where("id=$id")->delete();
+        $user = new Model\UserModel();
+        $state = $user->deleteUser($id);
+        if ($state) {
             $this->ajaxReturn(array("code" => 1, "message" => "删除成功", "callback" => "refresh"));
         } else {
             $this->ajaxReturn(array("code" => 0, "message" => "参数有误", "callback" => "refresh"));

@@ -11,6 +11,8 @@ use Think\Model;
 class AuthorityGrantModel extends Model
 {
 
+    const TABLE_NAME = "authority_grant";
+
     /**
      * 为这个角色授权
      * @param $roleId   角色ID
@@ -72,4 +74,7 @@ class AuthorityGrantModel extends Model
         }
         return $authorityIdAllList;
     }
+
+
+
 }
