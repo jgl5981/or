@@ -9,10 +9,6 @@ use Think\Model;
  */
 class RoleModel extends Model
 {
-    /**
-     *
-     */
-    const TABLE_NAME = "role";
 
     protected $_validate = array(
         array('name', 'require', '角色名称不能为空！', self::MUST_VALIDATE, 'regex', self::MODEL_BOTH), // 在新增的时候验证name字段是否唯一
@@ -61,9 +57,9 @@ class RoleModel extends Model
         $this->startTrans();
         try{
             $n = $this->delete($id);
-            $authority_grant = D(AuthorityGrantModel::TABLE_NAME);
+            $authority_grant = D("AuthorityGrant");
             $n = $authority_grant->where("role_id=$id")->delete();
-            $authority_grant = D(UserRoleModel::TABLE_NAME);
+            $authority_grant = D("UserRole");
             $n = $authority_grant->where("role_id=$id")->delete();
             $this->commit();
             return true;

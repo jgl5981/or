@@ -11,8 +11,6 @@ use Think\Model;
 class AuthorityModel extends Model
 {
 
-    const TABLE_NAME = "authority";
-
     /**
      * @var array
      */
@@ -53,7 +51,7 @@ class AuthorityModel extends Model
      */
     public function recursive()
     {
-        $authority = D('authority');
+        $authority = D('Authority');
         $list = $authority->select();
         $dataList = array();
         //封装成节点数对象
@@ -74,15 +72,18 @@ class AuthorityModel extends Model
         return $model;
     }
 
+
     /**
-     * 删除这个节点以及父节点,以及authority_grant 的关联
+     * 删除节点数
+     * @param $id 节点ID
+     * @return bool 是否删除发成功
      */
     public function deleteAuthority($id)
     {
         $this->startTrans();
         try{
             $n = $this->where("id=$id or parent_id = $id")->delete();
-            $authority_grant = D(AuthorityGrantModel::TABLE_NAME);
+            $authority_grant = D("AuthorityGrant");
             $n = $authority_grant->where("authority_id = $id")->delete();
             $this->commit();
             return true;

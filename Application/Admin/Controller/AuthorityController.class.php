@@ -86,7 +86,7 @@ class AuthorityController extends BaseController
     {
 
         $id = I("id");
-        $authority = D("authority");
+        $authority = D("Authority");
         $info = $authority->where("id=$id")->find();
         $list = $authority->select();
         array_unshift($list, array("id"=>-1, "menu_name"=>"顶级菜单"));

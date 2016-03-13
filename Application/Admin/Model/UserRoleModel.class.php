@@ -11,7 +11,6 @@ use Think\Model;
 class UserRoleModel extends Model
 {
 
-    const TABLE_NAME = "user_role";
     /**
      * 返回这个用户下的所有角色
      * @param $userId

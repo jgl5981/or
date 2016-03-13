@@ -25,7 +25,7 @@ class IndexController extends BaseController
         if (empty($name) || empty($password)) {
             $this->ajaxReturn(array("code" => 0, "message" => "账号密码不能为空。"));
         }
-        $user = D("user");
+        $user = D("User");
         $data = $user->where("name='$name'")->find();
         if ($data['password'] != $password) {
             $this->ajaxReturn(array("code" => 0, "message" => "密码不正确，请重新输入。"));

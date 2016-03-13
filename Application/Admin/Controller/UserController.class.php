@@ -20,7 +20,7 @@ class UserController extends BaseController
         $page_index = I("page_index");
         $name = I("name");
 
-        $user = D('user');
+        $user = D('User');
         $map["name"] = array("like", "%" . $name . "%");
         $page_count = $user->where($map)->count();
         $list = $user->where($map)->page($page_index, PAGE_SIZE)->order("id desc")->select();

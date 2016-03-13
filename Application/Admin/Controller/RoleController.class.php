@@ -30,7 +30,7 @@ class RoleController extends BaseController
 
     public function doAdd()
     {
-        $role = D("role");
+        $role = D("Role");
         if (!$role->create()) {
             $this->ajaxReturn(array("code" => 0, "message" => $role->getError()));
         } else {
@@ -48,7 +48,7 @@ class RoleController extends BaseController
     public function edit()
     {
         $id = I("id");
-        $role = D("role");
+        $role = D("Role");
         $data = $role->where("id=$id")->find();
         $this->assign("info", $data);
         $this->display();
@@ -56,7 +56,7 @@ class RoleController extends BaseController
 
     public function doEdit()
     {
-        $role = D("role");
+        $role = D("Role");
         if (!$role->create()) {
             $this->ajaxReturn(array("code" => 0, "message" => $role->getError()));
         } else {
@@ -69,7 +69,7 @@ class RoleController extends BaseController
     public function doDelete()
     {
         $id = I(id);
-        $role = D("role");
+        $role = D("Role");
         $state = $role->doDelete($id);
         if ($state) {
             $this->ajaxReturn(array("code" => 1, "message" => "添加角色成功！", "callback" => "refresh"));
@@ -81,7 +81,7 @@ class RoleController extends BaseController
     public function grant()
     {
         $id = I("id");
-        $role = D("role");
+        $role = D("Role");
         $authorityGrant = D("authority_grant");
         $role->where("id=$id")->find();
         $authorityInfoList = $authorityGrant->field("authority_id")->where("role_id=$id")->select();

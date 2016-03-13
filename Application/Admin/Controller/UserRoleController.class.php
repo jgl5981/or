@@ -20,7 +20,7 @@ class UserRoleController extends BaseController
         $page_index = I("page_index");
         $name = I("name");
 
-        $user = D('user');
+        $user = D('User');
         $map["name"] = array("like", "%" . $name . "%");
         $page_count = $user->where($map)->count();
         $userList = $user->where($map)->page($page_index, PAGE_SIZE)->order("id desc")->select();
@@ -77,7 +77,7 @@ class UserRoleController extends BaseController
     {
         $user_id = I("user_id");
         $role_id = I("role_id");
-        $userRole = D("user_role");
+        $userRole = D("UserRole2");
         $n = $userRole->where("role_id = $role_id AND user_id = $user_id")->delete();
         $this->ajaxReturn(array("code" => 1, "message" => "取消用户角色授权成功", "callback" => "refresh"));
     }

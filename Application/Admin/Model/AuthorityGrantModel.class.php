@@ -11,7 +11,6 @@ use Think\Model;
 class AuthorityGrantModel extends Model
 {
 
-    const TABLE_NAME = "authority_grant";
 
     /**
      * 为这个角色授权
@@ -21,7 +20,7 @@ class AuthorityGrantModel extends Model
      */
     public function doGrant($roleId, $authorityIdList)
     {
-        $authority = D("authority");
+        $authority = D("Authority");
         $authorityGrant = D("authority_grant");
         $authorityList = $authority->select();
         $authorityIdAllList = array();
