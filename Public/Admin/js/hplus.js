@@ -184,15 +184,11 @@ function WinMove() {
                 var msgOpts = {};
                 //如果存在则解析
                 switch (ajaxJson.code) {
-                    case -1:
-                        type = "error";
-                        message = ajaxJson.error;
-                        //如果是错误，显示时间延长为3000
-                        msgOpts.timeOut = 3000;
-                        break;
                     case 0:
                         type = "error";
                         message = ajaxJson.message;
+                        //如果是错误，显示时间延长为3000
+                        msgOpts.timeOut = 3000;
                         break;
                     case 1:
                         type = "success";
@@ -202,7 +198,7 @@ function WinMove() {
                             $(this).jqModal('close');
                         }
                         break;
-                    case 2:
+                    case -1:
                         type = "info";
                         message = ajaxJson.message == undefined ? "正在进行跳转..." : ajaxJson.message;
                         break;
@@ -217,7 +213,7 @@ function WinMove() {
 
                 if (callback && typeof callback == "function") callback();
 
-                if (ajaxJson.code == 2 && ajaxJson.redirect !== ""
+                if (ajaxJson.code == -1 && ajaxJson.redirect !== ""
                     && ajaxJson.redirect !== null
                     && ajaxJson.redirect !== undefined)
                     window.location = ajaxJson.redirect;
