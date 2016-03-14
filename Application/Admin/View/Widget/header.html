@@ -24,3 +24,14 @@
         Orange
     </div>
 </li>
+<script>
+    $(function () {
+        $(".dropdown-menu li a").on('click', function (event) {
+            event.preventDefault();
+            $this = $(this);
+            var url = $this.attr("data-url");
+            if (url == undefined || url == "") return;
+            util.reloadContent(url);
+        });
+    })
+</script>

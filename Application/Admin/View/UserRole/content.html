@@ -17,13 +17,13 @@
                 <td>{$vo.name}</td>
                 <td>
                     <volist name="vo['role']" id="voo">
-                    <span class="label label-white" style="display:inline-block;cursor:pointer"
-                          title="{$voo.descript}">{$voo.name}</span>
+                        <span class="label label-white" title="{$voo.descript}">{$voo.name}</span>
                     </volist>
                 </td>
                 <td>
-                    <a href="#" class="btn btn-primary btn-sm" title="分配角色" data-url="{:U('userRole?userId='.$vo['id'])}">
-                    <i class="fa fa-user-plus">Grant</i>
+                    <a href="#" class="btn btn-primary btn-sm" title="分配角色"
+                       data-url="{:U('userRole?userId='.$vo['id'])}">
+                        <i class="fa fa-user-plus">Grant</i>
                     </a>
                 </td>
             </tr>
