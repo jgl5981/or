@@ -36,12 +36,12 @@ class UserController extends BaseController
     {
         $user = D("User");
         if (!$user->create()) {
-            $this->ajaxReturn(array("code" => 0, "message" => $user->getError()));
+            $this->errorReturn($user->getError());
         } else {
             $user->password = md5("1");
             $name = $user->name;
             $code = $user->add();
-            $this->jsonReturn($code, "添加成功", "添加失败", "refresh", array("message" => $message = "您的用户名： $name , 密码：1。"));
+            $this->successReturn("添加成功", "refresh", array("message" => $message = "您的用户名： $name , 密码：1。"));
 
         }
     }
@@ -50,13 +50,13 @@ class UserController extends BaseController
     {
         $id = I("id");
         if (empty($id)) {
-            $this->ajaxReturn(array("code" => 0, "message" => "参数有误"));
+            $this->errorReturn("参数有误");
         } else {
             $user = M("User"); // 实例化User对象
             $info = $user->where("id=$id")->find();
             $info["password"] = md5(1);
             $code = $user->save($info);
-            $this->jsonReturn($code != false, "密码重置成功", "密码重置失败", "refresh", array("message" => $message = "您的用户名：" . $info["name"] . ", 密码：1。"));
+            $this->successReturn("密码重置成功", "refresh", array("message" => $message = "您的用户名：" . $info["name"] . ", 密码：1。"));
         }
     }
 
@@ -66,9 +66,9 @@ class UserController extends BaseController
         $user = new Model\UserModel();
         $state = $user->deleteUser($id);
         if ($state) {
-            $this->ajaxReturn(array("code" => 1, "message" => "删除成功", "callback" => "refresh"));
+            $this->successReturn("删除成功", "refresh");
         } else {
-            $this->ajaxReturn(array("code" => 0, "message" => "参数有误", "callback" => "refresh"));
+            $this->errorReturn("删除失败", "refresh");
         }
 
     }

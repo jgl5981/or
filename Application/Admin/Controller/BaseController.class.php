@@ -78,8 +78,45 @@ class BaseController extends Controller
         //大于1 都都算是成功状态
         $code = $code > 1 ? 1 : $code;
         //坑爹的三目运算符,我是日了狗了
-        $message = $code == 1 ? $code == 0 ? $fMessage : $sMessage : "";
+        $message = "";
+        if($code == 1) $message = $sMessage;
+        if($code == 0) $message = $fMessage;
+
         $this->ajaxReturn(array("code" => $code, "message" => $message, "callback" => $callback, "data" => $data, "redirect" => $redirect));
+    }
+
+
+    /**
+     * 返回成功信息
+     * @param string $message 成功显示信息
+     * @param string $callback 客户端需要回调的函数 没有传"",函数入参data,AjaxJson,xhr,
+     * @param string $data 客户端需要回调的函数 没有传"",传输数据(json)
+     */
+    public function successReturn($message = "操作成功", $callback = "", $data = "")
+    {
+        $this->ajaxReturn(array("code" => 1, "message" => $message, "callback" => $callback, "data" => $data));
+    }
+
+    /**
+     * 返回失败信息
+     * @param string $message 失败显示信息
+     * @param string $callback 客户端需要回调的函数 没有传"",函数入参data,AjaxJson,xhr,
+     * @param string $data 客户端需要回调的函数 没有传"",传输数据(json)
+     */
+    public function errorReturn($message = "操作失败", $callback = "", $data = "")
+    {
+        $this->ajaxReturn(array("code" => 0, "message" => $message, "callback" => $callback, "data" => $data));
+    }
+
+
+    /**
+     * 跳转
+     * @param string $message 重定向跳转时显示的信息
+     * @param string $redirect 重定向地址
+     */
+    public  function  redirectReturn($message = "操作失败", $redirect = "")
+    {
+        $this->ajaxReturn(array("code" => -1, "message" => $message, "redirect" => $redirect));
     }
     //endregion
 }

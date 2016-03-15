@@ -23,23 +23,23 @@ class IndexController extends BaseController
         $name = I('name');
         $password = md5(I('password'));
         if (empty($name) || empty($password)) {
-            $this->ajaxReturn(array("code" => 0, "message" => "账号密码不能为空。"));
+            $this->errorReturn("账号密码不能为空。");
         }
         $user = D("User");
         $data = $user->where("name='$name'")->find();
         if ($data['password'] != $password) {
-            $this->ajaxReturn(array("code" => 0, "message" => "密码不正确，请重新输入。"));
+            $this->errorReturn("密码不正确，请重新输入。");
         }
 
         $this->saveUser($data);
         $redirect = U("/Admin");
-        $this->ajaxReturn(array("code" => 2, "message" => "登入成功！正在进行跳转...", "redirect" => $redirect));
+        $this->redirectReturn("登入成功！正在进行跳转...", $redirect);
     }
 
     public function logout()
     {
         $this->deleteUser();
         $redirect = U("login");
-        $this->ajaxReturn(array("code" => 2, "message" => "成功退出...", "redirect" => $redirect));
+        $this->redirect("成功退出...", $redirect);
     }
 }

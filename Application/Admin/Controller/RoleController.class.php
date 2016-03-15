@@ -32,15 +32,15 @@ class RoleController extends BaseController
     {
         $role = D("Role");
         if (!$role->create()) {
-            $this->ajaxReturn(array("code" => 0, "message" => $role->getError()));
+            $this->errorReturn($role->getError());
         } else {
             $authorityIdString = I("authority_id");
             $authorityIdList = explode(",", $authorityIdString);
             $state = $role->addInfo($authorityIdList);
             if ($state) {
-                $this->ajaxReturn(array("code" => 1, "message" => "添加角色成功！", "callback" => "refresh"));
+                $this->successReturn("添加角色成功！", "refresh");
             } else {
-                $this->ajaxReturn(array("code" => 0, "message" => "添加角色失败！"));
+                $this->errorReturn("添加角色失败！", "refresh");
             }
         }
     }
@@ -58,10 +58,10 @@ class RoleController extends BaseController
     {
         $role = D("Role");
         if (!$role->create()) {
-            $this->ajaxReturn(array("code" => 0, "message" => $role->getError()));
+            $this->errorReturn($role->getError());
         } else {
             $role->where("id=" . $role->id)->save();
-            $this->ajaxReturn(array("code" => 1, "message" => "添加角色成功！", "callback" => "refresh"));
+            $this->successReturn("添加角色成功！","refresh");
         }
 
     }
@@ -72,9 +72,9 @@ class RoleController extends BaseController
         $role = D("Role");
         $state = $role->doDelete($id);
         if ($state) {
-            $this->ajaxReturn(array("code" => 1, "message" => "添加角色成功！", "callback" => "refresh"));
+            $this->successReturn("添加角色成功！","refresh");
         } else {
-            $this->ajaxReturn(array("code" => 0, "message" => "添加角色失败！"));
+            $this->errorReturn("添加角色失败！","refresh");
         }
     }
 
@@ -102,14 +102,14 @@ class RoleController extends BaseController
         $authorityGrant = D("authority_grant");
         if (empty($authorityIds)) {
             $authorityGrant->where("role_id=$roleId")->delete();
-            $this->ajaxReturn(array("code" => 1, "message" => "授权成功！"));
+            $this->successReturn("授权成功！");
         } else {
             $authorityIdList = explode(',', $authorityIds);
             $state = $authorityGrant->doGrant($roleId, $authorityIdList);
             if ($state) {
-                $this->ajaxReturn(array("code" => 1, "message" => "授权成功！"));
+                $this->successReturn("授权成功！");
             } else {
-                $this->ajaxReturn(array("code" => 0, "message" => "授权失败！"));
+                $this->successReturn("授权失败！");
             }
         }
     }

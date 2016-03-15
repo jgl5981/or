@@ -1,60 +1,41 @@
-<div class="row">
-    <div class="ibox">
-        <div class="ibox-title">
-            <h5>角色管理</h5>
-        </div>
-        <div class="ibox-content">
-            <div class="row">
-                <a href="#" data-url="{:U(add)}" class="btn btn-primary btn-sm" title="添加角色"><i class="fa fa-plus">Add</i></a>
-                <div class="col-sm-6">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <table class="table table-hover">
-                                <thead>
-                                <tr>
-                                    <th>#</th>
-                                    <th>角色名称</th>
-                                    <th>角色描述</th>
-                                    <th class="right">操作</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <volist name="list" id="vo">
-                                    <tr>
-                                        <td>{$i}</td>
-                                        <td><a href="#" data-toggle="tooltip" title=""
-                                               data-original-title="{$vo.name}">{$vo.name|mb_substr=0,10,'utf-8'}</a>
-                                        </td>
-                                        <td><a href="#" data-toggle="tooltip" title=""
-                                               data-original-title="{$vo.descript}">{$vo.descript|mb_substr=0,25,'utf-8'}</a>
-                                        </td>
-                                        <td colspan="2">
-                                            <a href="#" class="btn btn-primary btn-sm"
-                                               data-url="{:U('grant?id='.$vo['id'])}" title="授权菜单"><i class="fa fa-key">Authority</i></a>
-                                            <a href="#" class="btn btn-success btn-sm"
-                                               data-url="{:U('edit?id='.$vo['id'])}" title="编辑角色"><i
-                                                    class="fa fa-pencil">Edit</i></a>
-                                            <a href="#" class="btn btn-danger btn-sm" data-del="true"
-                                               data-name="{$vo.name}"
-                                               data-url="{:U('doDelete?id='.$vo['id'])}"
-                                               title="删除角色"><i
-                                                    class="fa fa-trash">Delete</i></a>
-                                        </td>
-                                    </tr>
-                                </volist>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-sm-6" id="refreshPanel"></div>
-            </div>
-        </div>
-    </div>
-</div>
+<table class="table table-hover">
+    <thead>
+    <tr>
+        <th>#</th>
+        <th>角色名称</th>
+        <th>角色描述</th>
+        <th class="right">操作</th>
+    </tr>
+    </thead>
+    <tbody>
+    <volist name="list" id="vo">
+        <tr>
+            <td>{$i}</td>
+            <td><a href="#" data-toggle="tooltip" title=""
+                   data-original-title="{$vo.name}">{$vo.name|mb_substr=0,10,'utf-8'}</a>
+            </td>
+            <td><a href="#" data-toggle="tooltip" title=""
+                   data-original-title="{$vo.descript}">{$vo.descript|mb_substr=0,25,'utf-8'}</a>
+            </td>
+            <td colspan="2">
+                <a href="#" class="btn btn-primary btn-sm"
+                   data-url="{:U('grant?id='.$vo['id'])}" title="授权菜单"><i class="fa fa-key">Authority</i></a>
+                <a href="#" class="btn btn-success btn-sm"
+                   data-url="{:U('edit?id='.$vo['id'])}" title="编辑角色"><i
+                        class="fa fa-pencil">Edit</i></a>
+                <a href="#" class="btn btn-danger btn-sm" data-del="true"
+                   data-name="{$vo.name}"
+                   data-url="{:U('doDelete?id='.$vo['id'])}"
+                   title="删除角色"><i
+                        class="fa fa-trash">Delete</i></a>
+            </td>
+        </tr>
+    </volist>
+    </tbody>
+</table>
 <script>
     $(function () {
-        $(".btn-sm").on("click", function (event) {
+        $("table a").on("click", function (event) {
             var $this = $(this);
             var url = $this.attr("data-url");
             if (url == undefined || url == "") return;
@@ -73,7 +54,7 @@
                     cancelButton: "取消"
                 });
             } else {
-                util.reloadContent(url, null, $("#refreshPanel"));
+                util.reloadContent(url, null, $("#panel"));
             }
         });
     });

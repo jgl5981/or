@@ -1,9 +1,35 @@
-<div id="content">
+<div class="row">
+    <div class="ibox">
+        <div class="ibox-title">
+            <h5>角色管理</h5>
+        </div>
+        <div class="ibox-content">
+            <div class="row">
+                <div class="col-sm-6">
+                    <a href="#" data-url="{:U(add)}" id="addUser" class="btn btn-primary btn-sm" title="添加角色"><i
+                            class="fa fa-plus">Add</i></a>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div id="content">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6" id="panel"></div>
+            </div>
+        </div>
+    </div>
 </div>
 
 <script>
     $(function () {
         refresh();
+
+        $("#addUser").on("click", function (event) {
+            var url = $(this).attr("data-url");
+            if (url == undefined || url == "") return;
+            util.reloadContent(url, null, $("#panel"));
+        })
     })
     function refresh() {
         util.reloadContent('{:U("content")}', null, $("#content"));

@@ -59,6 +59,7 @@ $(document).ready(function () {
         var heightWithoutNavbar = $("body > #wrapper").height() - 61;
         $(".sidebard-panel").css("min-height", heightWithoutNavbar + "px");
     }
+
     fix_height();
 
     // Fixed Sidebar
@@ -148,7 +149,6 @@ function WinMove() {
 
 (function (window, $) {
     var win = window,
-
         util = {
             //包含遮罩ajax请求
             ajax: function (opts) {
@@ -157,7 +157,7 @@ function WinMove() {
                         beforeSend: function () {
                             $.blockUI({
                                 message: '<i class="fa fa-spinner fa-pulse"></i> 努力加载中，请稍等...',
-                                css: { width: '15%', left: '40%' },
+                                css: {width: '15%', left: '40%'},
                                 overlayCSS: {
                                     backgroundColor: '#293846',
                                     opacity: 0.6,
@@ -170,14 +170,18 @@ function WinMove() {
                 options = $.extend(options || {}, default_options, opts);
                 return $.ajax(options).complete($.unblockUI);
             }
-            //ajaxJson完成处理
-            , ajaxJsonComplete: function (ajaxJson, callback, xhr) {
+            /***
+             * @param ajaxJson 服务端ajax 返回的数据
+             * @param state 回调函数
+             * @param xhr 参数
+             */
+            , ajaxJsonComplete: function (ajaxJson, state, xhr) {
                 //检测json对象是否存在，表示拦截到系统异常，直接跳转
                 if (typeof ajaxJson.code == "undefined") {
                     if (ajaxJson.responseText)
                         window.document.write(ajaxJson.responseText.replace("<body>", "<body class='gray-bg'>"));
                     else
-                        util.tips("请求服务器错误！", "error", { timeOut: 3000 });
+                        util.tips("请求服务器错误！", "error", {timeOut: 3000});
                 }
                 var message = "";
                 var type = "";
@@ -189,6 +193,7 @@ function WinMove() {
                         message = ajaxJson.message;
                         //如果是错误，显示时间延长为3000
                         msgOpts.timeOut = 3000;
+                        util.tips(message, type, msgOpts);
                         break;
                     case 1:
                         type = "success";
@@ -197,27 +202,60 @@ function WinMove() {
                             //关闭弹窗
                             $(this).jqModal('close');
                         }
+                        util.tips(message, type, msgOpts);
                         break;
                     case -1:
                         type = "info";
                         message = ajaxJson.message == undefined ? "正在进行跳转..." : ajaxJson.message;
-                        break;
+                        if (ajaxJson.redirect !== "" && ajaxJson.redirect !== null && ajaxJson.redirect !== undefined) {
+                            window.location = ajaxJson.redirect;
+                        }
+                        return;
                 }
-
-                if (!(message == undefined || message == "" || message == null)) {
-                    util.tips(message, type, msgOpts);
-                }
-
-                if (ajaxJson.callback && typeof ajaxJson.callback == "string")
+                //回调函数
+                if (ajaxJson.callback && typeof ajaxJson.callback == "string") {
                     win[ajaxJson.callback](ajaxJson.data, ajaxJson, xhr);
-
-                if (callback && typeof callback == "function") callback();
-
-                if (ajaxJson.code == -1 && ajaxJson.redirect !== ""
-                    && ajaxJson.redirect !== null
-                    && ajaxJson.redirect !== undefined)
-                    window.location = ajaxJson.redirect;
+                }
             }
+            /**
+             * 异步加载url内容,更新到target
+             * @param url 请求地址
+             * @param data 请求数据
+             * @param target 更新div的ID
+             */
+            , reloadContent: function (url, data, target) {
+                var that = this;
+                var method = data == null ? "GET" : "POST";   //这里的GET,POST会影响到I方法,所以如果data没有数据,就用GET方式的ajax
+                that.ajax({url: url, data: data, method: method})
+                    .error(function (json, state, xhr) {
+                        that.ajaxJsonComplete(json, state, xhr);
+                    })
+                    .success(function (html, state, xhr) {
+                        if (typeof html == "object") {   //请求回来的是一个json,那么久调用ajaxComplete完成解析,并处理
+                            that.ajaxJsonComplete(html, state, xhr);
+                        }
+                        else { //回来的是一段HTML,那么更新到target这个标签
+                            if (typeof target == "string") {
+                                $("#" + target).html(html);
+                            }
+                            else if (target instanceof jQuery) {
+                                target.html(html);
+                            }
+                            else if (typeof target == "object") {
+                                $(target).html(html);
+                            }
+                            else {
+                                $("#template_content").html(html);   //没有信息的话,就把这个返回信息放到整个页面上展示出来
+                            }
+                        }
+                    });
+            }
+            /**
+             * 弹框提示
+             * @param message 内容
+             * @param type 类型 error/success/info
+             * @param opts 选项
+             */
             , tips: function (message, type, opts) {
                 var options = {
                     positionClass: 'toast-top-center',
@@ -225,44 +263,6 @@ function WinMove() {
                 };
                 toastr.options = $.extend(options || {}, opts);
                 toastr[type](message);
-            }
-            , reloadContent: function (url, data, target, callback) {
-                var that = this;
-                //这里的GET,POST会影响到I方法,所以如果data没有数据,就用GET方式的ajax
-                var method = data == null ? "GET" : "POST";
-                that.ajax({ url: url, data: data, method : method })
-                    .error(function (json, state, xhr) {
-                        that.ajaxJsonComplete(json, state, xhr);
-                    })
-                    .success(function (html, state, xhr) {
-                        if (typeof html == "object") {
-                            that.ajaxJsonComplete(html, state, xhr);
-                        }
-                        else {
-                            if (target == undefined) {
-                                $("#template_content").html(html);
-
-                            }
-                            else {
-                                if (typeof target == "string") {
-                                    $("#" + target).html(html);
-                                }
-                                else if (target instanceof jQuery) {
-                                    target.html(html);
-                                } else if (typeof target == "object") {
-                                    $(target).html(html);
-                                }
-                            }
-                        }
-                        if (typeof callback == "function")
-                            callback(xhr);
-                    });
-            }
-            , ecodeHtmlToText: function (html) {
-                return $("<div>").text(html).html();
-            },
-            ecodeTextToHtml: function (text) {
-                return $("<div>").html(text).html();
             }
         };
     win.util = util;

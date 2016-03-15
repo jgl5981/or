@@ -1,4 +1,4 @@
-<if condition="count($dataList) eq 0">
+<if condition="count($list) eq 0">
     <div class='alert alert-warning text-center' role='alert'>亲，没有查到数据哦。换个条件试试？</div>
     <else/>
     <table class="table table-striped table-hover">
@@ -11,7 +11,7 @@
         </tr>
         </thead>
         <tbody>
-        <volist name="dataList" id="vo">
+        <volist name="list" id="vo">
             <tr>
                 <td>{$key+1}</td>
                 <td>{$vo.name}</td>

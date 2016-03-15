@@ -1,18 +1,12 @@
 <if condition="count($list) eq 0">
     <div class='alert alert-warning text-center' role='alert'>亲，没有查到数据哦。换个条件试试？</div>
     <else/>
-
     <table class="table table-striped table-hover">
         <thead>
         <tr>
-            <th>序号</th>
-            <th>昵称</th>
-            <th>操作</th>
-            <th class="text-center">
-                <a href="#" data-url="{:U('add')}" class="btn btn-primary btn-sm" title="添加管理员">
-                    <i class="fa fa-plus">Add</i>
-                </a>
-            </th>
+            <th class="col-md-3">序号</th>
+            <th class="col-md-5">昵称</th>
+            <th class="col-md-2">操作</th>
         </tr>
         </thead>
         <tbody>
@@ -20,9 +14,9 @@
             <tr>
                 <td>{$i}</td>
                 <td>
-                    <a href="#" data-url="{:U('add')}" data-toggle="tooltip"  title="{$vo.name}">{$vo.name}</a>
+                    <a href="#" data-url="" data-toggle="tooltip"  title="{$vo.name}">{$vo.name}</a>
                 </td>
-                <td colspan="2">
+                <td>
                     <a href="#" class="btn btn-primary btn-sm" data-reset="true" data-name="{$vo.name}"
                        data-url="{:U('doResetPassword?id='.$vo['id'])}">
                         <i class="fa fa-key">RestPass</i></a>
@@ -57,7 +51,7 @@
                         title: "用户操作提示",
                         text: "确定要删除用户[" + $this.attr("data-name") + "]吗？",
                         confirm: function (button) {
-                            util.reloadContent(url, null, $("#content"));
+                            util.reloadContent(url)
                         },
                         cancel: function (button) {
                             util.tips("取消删除用户操作。", "info");
@@ -70,7 +64,7 @@
                         title: "用户操作提示",
                         text: "确定要重置用户[" + $this.attr("data-name") + "]的密码吗？",
                         confirm: function (button) {
-                            util.reloadContent(url, null, $("#content"));
+                            util.reloadContent(url);
                         },
                         cancel: function (button) {
                             util.tips("取消用户重置密码操作。", "info");
@@ -78,8 +72,6 @@
                         confirmButton: "确定",
                         cancelButton: "取消"
                     });
-                } else {
-                    util.reloadContent(url, null, $("#manager_target"));
                 }
             });
         });

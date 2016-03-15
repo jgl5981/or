@@ -58,13 +58,13 @@ class AuthorityController extends BaseController
             $this->ajaxReturn(array("code" => 0, "message" => $authority->getError()));
         } else {
             if (I("is_enable_link") && empty(I("link"))) {
-                $this->ajaxReturn(array("code" => 0, "message" => "选择链接菜单时，必须填写菜单地址！"));
+                $this->errorReturn("选择链接菜单时，必须填写菜单地址！");
             }
             $state = $authority->addNode();
             if ($state) {
-                $this->ajaxReturn(array("code" => 1, "message" => "添加菜单成功！", "callback" => "refresh"));
+                $this->successReturn("添加菜单成功", "refresh");
             } else {
-                $this->ajaxReturn(array("code" => 0, "message" => "添加菜单失败！"));
+                $this->errorReturn("添加菜单失败！", "refresh");
             }
 
         }
@@ -75,10 +75,10 @@ class AuthorityController extends BaseController
         $id = I("id");
         $authority = D("Authority");
         $state = $authority->deleteAuthority($id);
-        if($state){
-            $this->ajaxReturn(array("code" => 1, "message" => "删除菜单成功！", "callback" => "refresh"));
-        }else{
-            $this->ajaxReturn(array("code" => 0, "message" => "删除菜单失败！", "callback" => "refresh"));
+        if ($state) {
+            $this->successReturn("删除菜单成功！", "refresh");
+        } else {
+            $this->errorReturn("删除菜单失败", "refresh");
         }
     }
 
@@ -88,9 +88,14 @@ class AuthorityController extends BaseController
         $id = I("id");
         $authority = D("Authority");
         $info = $authority->where("id=$id")->find();
-        $list = $authority->select();
-        array_unshift($list, array("id"=>-1, "menu_name"=>"顶级菜单"));
-        $info["parent_list"] = $list;
+        $list = $authority->field("id, menu_name")->select();
+        $data = array();
+        foreach ($list as $key => $val) {
+            $data[$val["id"]] = $val["menu_name"];
+        }
+        array_unshift($list, array("id" => -1, "menu_name" => "顶级菜单"));
+        $this->assign("list", $data);
+        $this->assign("is_enable_link_list", array(1 => "是", 0 => "否"));
         $this->assign("info", $info);
         $this->display();
 
@@ -103,13 +108,13 @@ class AuthorityController extends BaseController
             $this->ajaxReturn(array("code" => 0, "message" => $authority->getError()));
         } else {
             if (I("is_enable_link") && empty(I("link"))) {
-                $this->ajaxReturn(array("code" => 0, "message" => "选择链接菜单时，必须填写菜单地址！"));
+                $this->errorReturn("选择链接菜单时，必须填写菜单地址！");
             }
             $state = $authority->updateNode();
             if ($state) {
-                $this->ajaxReturn(array("code" => 1, "message" => "修改菜单成功！", "callback" => "refresh"));
+                $this->successReturn("修改菜单成功", "refresh");
             } else {
-                $this->ajaxReturn(array("code" => 0, "message" => "添加菜单失败！"));
+                $this->errorReturn("添加菜单失败！", "refresh");
             }
 
         }

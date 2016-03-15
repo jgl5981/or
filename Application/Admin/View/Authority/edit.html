@@ -1,5 +1,5 @@
+<taglib name='cx,html' />
 <script type="text/javascript">
-
     $(function () {
         //原始值
         var sourceVal = $("#menu_link").val(),
@@ -20,11 +20,11 @@
         $menuLink.change(function () {
             if ($(this).val() !== "") $linkReply.removeClass("hidden");
         });
-
+        //是否链接菜单
         if ($("input[name='is_enable_link']:checked").val() == "0") {
             $menuLink.attr("disabled", true);
         }
-
+        //图标样式
         $("#icon").on('keyup', function (event) {
             $input = $(event.target);
             $input.parent().find("i")
@@ -65,11 +65,7 @@
             <div class="form-group">
                 <label class="col-sm-3 control-label">上级菜单：</label>
                 <div class="col-sm-9">
-                    <select name="parent_id" class="form-control">
-                        <volist name="info[parent_list]" id="vo">
-                            <option  value="{$vo.id}" {$vo[id] == $info[parent_id] ? "selected=selected" : ""} >{$vo.menu_name}</option>
-                        </volist>
-                    </select>
+                    <html:select name="parent_id" style="form-control" options="list" selected="info[parent_id]"  first="顶级菜单"/>
                 </div>
             </div>
             <div class="hr-line-dashed"></div>
@@ -77,7 +73,8 @@
                 <label class="col-sm-3 control-label">链接菜单：</label>
 
                 <div class="col-sm-9">
-                    <div class="radio-inline">
+                    <html:radio name="is_enable_link" radios="is_enable_link_list" checked="info[is_enable_link]" />
+<!--                    <div class="radio-inline">
                         <label> <input type="radio" name="is_enable_link" class="radio" value="1"
                                        {$info[is_enable_link]== 1 ? "checked=checked" : ""} />
                             是
@@ -89,7 +86,7 @@
                                    {$info[is_enable_link]== 0 ? "checked=checked" : ""}/>
                             否
                         </label>
-                    </div>
+                    </div>-->
                 </div>
             </div>
             <div class="hr-line-dashed"></div>

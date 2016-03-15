@@ -27,14 +27,14 @@
                     var elem = event.target;
                     var url = $(elem).attr("data-grant-url") || undefined;
                     if (url) {
-                        util.ajax({url: url, success: util.ajaxJsonComplete, error: util.ajaxJsonComplete, method : "GET"});
+                        util.reloadContent(url);
                     }
                 })
                 .on('ifUnchecked', function (event) {
                     var elem = event.target;
                     var url = $(elem).attr("data-remove-url") || undefined;
                     if (url) {
-                        util.ajax({url: url, success: util.ajaxJsonComplete, error: util.ajaxJsonComplete, method : "GET"});
+                        util.reloadContent(url);
                     }
                 });
     });

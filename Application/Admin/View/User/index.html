@@ -20,11 +20,17 @@
                                 </div>
                             </form>
                         </div>
+                        <div class="col-md-2">
+                            <a href="#" data-url="{:U('add')}" id="addUser" class="btn btn-primary btn-sm"
+                               title="添加管理员">
+                                <i class="fa fa-plus">Add</i>
+                            </a>
+                        </div>
                     </div>
                     <div class="row" id="content">
                     </div>
                 </div>
-                <div class="col-md-6" id="manager_target">
+                <div class="col-md-6" id="panel">
                 </div>
             </div>
         </div>
@@ -32,17 +38,24 @@
 </div>
 <script>
     $(function () {
+        //初始化时加载数据列表
         util.reloadContent('{:U("content")}', null, $("#content"));
+
+        $("#addUser").on("click", function (event) {
+            var url = $(this).attr("data-url");
+            if (url == undefined || url == "") return;
+            util.reloadContent(url, null, $("#panel"));
+        })
+
     })
 
+    //做了其他其他(添加,修改)之后回调这个函数,刷新数据列表
     function refresh(data) {
         util.reloadContent('{:U("content")}', null, $("#content"), function () {
-
             if (data) {
                 setTimeout(function () {
                     $("#content").append("<div class='alert alert-warning text-center' role='alert'>" + data.message + "</div>")
-                            .find(".alert alert-warning text-center")
-                            .remove();
+                                  .find("alert alert-warning text-center").remove();
                 }, 1500);
             }
         });

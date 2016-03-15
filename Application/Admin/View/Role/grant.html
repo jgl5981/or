@@ -74,7 +74,7 @@
             //var grant = event.node.id;
             //var child = event.node.children;
             //if (child.length > 0) grant = child.join(',');
-
+            //选中的节点ID拼接提交
             var data = { roleId: $("#role_id").val(), grantList: grant.join(',') };
             util.ajax({
                 url: '{:U("doGrant")}',
@@ -99,6 +99,7 @@
                     .on("uncheck_node.jstree", get_checked_node);
         }
 
+        //选中节点
         function checknode(node, grant, tree) {
             tree.open_node(node);
             var $childrens = tree.get_children_dom(node);

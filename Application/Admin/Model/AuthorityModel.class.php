@@ -2,6 +2,7 @@
 namespace Admin\Model;
 
 use Admin\Common\CommonJson;
+use Admin\Common\Util;
 use Think\Model;
 
 /**
@@ -102,7 +103,7 @@ class AuthorityModel extends Model
         /* 获取数据对象 */
         $data = $this->data();
         $data["path"] = "-1";
-        $data["create_time"] = date('Y-m-d H:i:s', time());
+        $data["create_time"] = Util::now();
 
         $this->startTrans();
         try {
@@ -130,8 +131,8 @@ class AuthorityModel extends Model
      */
     public function updateNode()
     {
-        $data = $this->data();
         try {
+            $data = $this->data();
             $id = $data["id"];
             $parentId = $data["parent_id"];
             $path = "/$id";
@@ -144,10 +145,8 @@ class AuthorityModel extends Model
             }
             $data["path"] = $path;
             $this->where("id=$id")->save($data);
-            $data->commit();
             return true;
         } catch (\Exception $e) {
-            $this->rollback();
             return false;
         }
 
