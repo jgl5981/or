@@ -2,7 +2,7 @@
     <li>
         <a href="#" data-url="">
             <if condition="empty($vo['icon']) nheq true">
-                <i class="{$vo.icon}" title="{$vo.menu_name}"></i>
+                <i class="{$vo.icon}" title="{$vo.menu_name}" style="width:20px;text-align: center"></i>
             </if>
             <span class="nav-label">{$vo.menu_name}</span>
             <if condition="count($vo['child_menu']) gt 0">
@@ -15,9 +15,9 @@
                     <li>
                         <a href="#"
                            data-url="{:U($voo['like_list'][0].'/'.$voo['like_list'][1].'/'.$voo['like_list'][2])}">
-                            <if condition="empty($voo['icon']) nheq true">
+                      <!--      <if condition="empty($voo['icon']) nheq true">
                                 <i class="{$voo.icon}" title="{$voo.menu_name}"  style="width:20px;text-align: center"></i>
-                            </if>
+                            </if>-->
                             {$voo.menu_name}
                         </a>
                     </li>

@@ -219,14 +219,34 @@ class Html extends TagLib
         $radios = $this->tpl->get($radios);
         $checked = $this->tpl->get($checked) ? $this->tpl->get($checked) : $checked;
         $parseStr = '';
+        $first = true;
         foreach ($radios as $key => $val) {
-            $parseStr .= ' <div class="radio-inline">';
-            $parseStr .= ' <label>';
-            $parseStr .= '<input type="radio" ';
-            $parseStr .= '<?php if($' . $checked . ' == '.$key.') { echo "checked=\"checked\""; }  ?>';
-            $parseStr .= ' name="' . $name . '" value="' . $key . '">' . $val . $separator;
-            $parseStr .= ' </label>';
-            $parseStr .= ' </div>';
+            if (isset($checked)) {
+                $parseStr .= ' <div class="radio-inline">';
+                $parseStr .= ' <label>';
+                $parseStr .= '<input type="radio" ';
+                $parseStr .= '<?php if($' . $checked . ' == ' . $key . ') { echo "checked=\"checked\""; }  ?>';
+                $parseStr .= ' name="' . $name . '" value="' . $key . '">' . $val . $separator;
+                $parseStr .= ' </label>';
+                $parseStr .= ' </div>';
+            }
+            else if(!isset($checked) && $first)
+            {
+                $parseStr .= ' <div class="radio-inline">';
+                $parseStr .= ' <label>';
+                $parseStr .= '<input type="radio" checked="checked"  name="' . $name . '" value="' . $key . '">' . $val . $separator;
+                $parseStr .= ' </label>';
+                $parseStr .= ' </div>';
+                $first = false;
+            }
+            else
+            {
+                $parseStr .= ' <div class="radio-inline">';
+                $parseStr .= ' <label>';
+                $parseStr .= '<input type="radio" name="' . $name . '" value="' . $key . '">' . $val . $separator;
+                $parseStr .= ' </label>';
+                $parseStr .= ' </div>';
+            }
 
         }
         return $parseStr;

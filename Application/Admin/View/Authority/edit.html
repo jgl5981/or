@@ -17,9 +17,6 @@
             }
         });
 
-        $menuLink.change(function () {
-            if ($(this).val() !== "") $linkReply.removeClass("hidden");
-        });
         //是否链接菜单
         if ($("input[name='is_enable_link']:checked").val() == "0") {
             $menuLink.attr("disabled", true);
@@ -74,19 +71,6 @@
 
                 <div class="col-sm-9">
                     <html:radio name="is_enable_link" radios="is_enable_link_list" checked="info[is_enable_link]" />
-<!--                    <div class="radio-inline">
-                        <label> <input type="radio" name="is_enable_link" class="radio" value="1"
-                                       {$info[is_enable_link]== 1 ? "checked=checked" : ""} />
-                            是
-                        </label>
-                    </div>
-                    <div class="radio-inline">
-                        <label>
-                            <input type="radio" name="is_enable_link" class="radio" value="0"
-                                   {$info[is_enable_link]== 0 ? "checked=checked" : ""}/>
-                            否
-                        </label>
-                    </div>-->
                 </div>
             </div>
             <div class="hr-line-dashed"></div>
@@ -94,7 +78,7 @@
                 <label class="col-sm-3 control-label">菜单地址：</label>
 
                 <div class="col-sm-9">
-                    <input type="text" name="link" class="form-control" placeholder="/" id="menu_link" value="{$info.link}"/>
+                    <input type="text" name="link" class="form-control" placeholder="" id="menu_link" value="{$info.link}"/>
                 </div>
             </div>
             <div class="form-group">

@@ -1,3 +1,4 @@
+<taglib name='cx,html' />
 <script type="text/javascript">
     $(function () {
 
@@ -44,28 +45,14 @@
             <div class="hr-line-dashed"></div>
             <div class="form-group">
                 <label class="col-sm-3 control-label">链接菜单：</label>
-
-                <div class="col-sm-9">
-                    <div class="radio-inline">
-                        <label>
-                            <input type="radio" checked="checked" class="radio" name="is_enable_link" value=1>
-                            是
-                        </label>
-                    </div>
-                    <div class="radio-inline">
-                        <label>
-                            <input type="radio"  class="radio" name="is_enable_link" value=0>
-                            否
-                        </label>
-                    </div>
-                </div>
+                <html:radio name="is_enable_link" radios="is_enable_link_list" />
             </div>
             <div class="hr-line-dashed"></div>
             <div class="form-group">
                 <label class="col-sm-3 control-label">菜单地址：</label>
 
                 <div class="col-sm-9">
-                    <input name="link" type="text" class="form-control" placeholder="/" id="menu_link"/>
+                    <input name="link" type="text" class="form-control" placeholder="" id="menu_link"/>
                     <i class="fa fa-mail-reply hidden" id="link_reply" style="cursor: pointer;" title="撤销"></i>
                 </div>
             </div>

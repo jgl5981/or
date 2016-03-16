@@ -46,6 +46,7 @@ class AuthorityController extends BaseController
         $id = I("id");
         $authority = new Model\AuthorityModel();
         $info = $authority->nodeInfo($id);
+        $this->assign("is_enable_link_list", array(1 => "是", 0 => "否"));
         $this->assign("info", $info);
         $this->display();
 

@@ -40,6 +40,6 @@ class IndexController extends BaseController
     {
         $this->deleteUser();
         $redirect = U("login");
-        $this->redirect("成功退出...", $redirect);
+        $this->redirectReturn("成功退出...", $redirect);
     }
 }
