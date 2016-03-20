@@ -1,0 +1,27 @@
+<div class="animated fadeInRight">
+    <div class="search-form"><h4>新增新闻分类</h4></div>
+    <div class="ibox-content">
+        <form method="post" action="{:U('doAdd')}" , data-ajax="true" data-ajax-success="ajaxJsonComplete"
+              data-ajax-failure="ajaxJsonComplete" class="form-horizontal" id="authority_Add">
+            <div class="form-group">
+                <label class="col-sm-3 control-label">分类名称：</label>
+                <div class="col-sm-9">
+                    <input name="name" type="text" class="form-control" />
+                </div>
+            </div>
+            <div class="hr-line-dashed"></div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">上级菜单：</label>
+                <div class="col-sm-9">
+                    <input type="hidden" name="parent_id" value="{$info.parent_id}" />
+                    {$info.parent_name}
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-12 col-sm-offset-6">
+                    <button type="submit" class="btn btn-primary">新增</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

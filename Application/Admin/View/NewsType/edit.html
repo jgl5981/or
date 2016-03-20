@@ -1,0 +1,28 @@
+<taglib name='cx,html' />
+<div class="animated fadeInRight">
+    <div class="search-form"><h4>编辑新闻分类</h4></div>
+    <div class="ibox-content">
+        <form method="post" action="{:U('doEdit')}" , data-ajax="true" data-ajax-success="ajaxJsonComplete"
+              data-ajax-failure="ajaxJsonComplete" class="form-horizontal" id="authority_edit">
+            <div class="form-group">
+                <label class="col-sm-3 control-label">分类名称：</label>
+                <div class="col-sm-9">
+                    <input type="hidden" name="id" value="{$info.id}"/>
+                    <input type="text" name="name" class="form-control" value="{$info.name}"/>
+                </div>
+            </div>
+            <div class="hr-line-dashed"></div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">上级菜单：</label>
+                <div class="col-sm-9">
+                    <html:select name="parent_id" style="form-control" options="list" selected="info[parent_id]"  first="顶级新闻类别"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-12 col-sm-offset-6">
+                    <button type="submit" class="btn btn-primary">保存</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

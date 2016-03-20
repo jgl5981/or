@@ -1,0 +1,103 @@
+<if condition="count($list) eq 0">
+    <div class='alert alert-warning text-center' role='alert'>亲，没有查到数据哦。换个条件试试？</div>
+    <else/>
+    <table class="table table-hover table-mail" id="product_list">
+        <thead>
+        <tr class="unread">
+            <th class="col-md-1">序号</th>
+            <th class="col-md-1">主图</th>
+            <th class="col-md-1">新闻分类</th>
+            <th class="col-md-3">新闻标题</th>
+            <th class="col-md-2">标签</th>
+            <th class="col-md-1">发布用户</th>
+            <th class="col-md-2">更新时间</th>
+            <th class="col-md-1">操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        <volist name="list" id="vo">
+            <tr class="read">
+                <td>{$i}</td>
+                <td style="width:100px">
+                    <empty name="vo.image">
+                        暂无图片
+                        <else/>
+                        <img class="img-preview" src="__PICTURE__/{$vo.image}"/>
+                    </empty>
+                </td>
+                <td>{$vo.type_name}</td>
+                <td>
+                    <a href="#" title="点击查看详细" data-detail="true" data-url="{:U('detail',array('id'=>$vo['id']))}"
+                       class="font-bold">
+                        {$vo.title}
+                    </a>
+                </td>
+                <td>{$vo.tag}</td>
+                <td>{$vo.user_name}</td>
+                <td>{$vo.update_time}</td>
+                <td>
+                    <div class="btn-group">
+                        <button data-toggle="dropdown" class="btn btn-primary btn-xs dropdown-toggle"
+                                aria-expanded="false">
+                            操作 <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a href="#" data-edit="true" data-name="{$vo.title}"
+                                   data-url="{:U('edit?id='.$vo['id'])}"
+                                   class="font-bold">编辑</a>
+                            </li>
+                            <li>
+                                <a href="#" data-del="true" data-name="{$vo.title}"
+                                   data-url="{:U('doDelete?id='.$vo['id'])}" class="font-bold">删除</a>
+                            </li>
+                        </ul>
+                    </div>
+                </td>
+            </tr>
+        </volist>
+        </tbody>
+    </table>
+    <div id="pager" class="text-center"></div>
+    <script>
+        $(function () {
+            $("#pager").ajaxPager({
+                formId: "search_form",
+                page_count: "{$page_count}",
+                page_index: "{$page_index}"
+            })
+        });
+    </script>
+    <script>
+        $(function () {
+            $("table a").on("click", function (event) {
+                var $this = $(this);
+                var url = $this.attr("data-url");
+                if (url == undefined || url == "") return;
+                var del = $this.attr("data-del");
+                var detail = $this.attr("data-detail");
+                var edit = $this.attr("data-edit");
+                if (del && del === "true") {
+                    $.confirm({
+                        title: "用户操作提示",
+                        text: "确定要删除新闻[" + $this.attr("data-name") + "]吗？",
+                        confirm: function (button) {
+                            util.reloadContent(url)
+                        },
+                        cancel: function (button) {
+                            util.tips("取消删除新闻操作。", "info");
+                        },
+                        confirmButton: "确定",
+                        cancelButton: "取消"
+                    });
+                }
+                else if (detail && detail === "true") {
+                    util.reloadContent(url);
+                }
+                else if (edit && edit === "true") {
+                    util.reloadContent(url);
+                }
+            });
+        });
+    </script>
+</if>

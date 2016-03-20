@@ -1,0 +1,165 @@
+<div class="row">
+    <div class="col-sm-12">
+        <div class="ibox">
+            <div class="ibox-title">
+                <h5>新闻类型管理</h5>
+            </div>
+            <div class="ibox-content">
+                <div class="row">
+                    <div class="col-sm-5">
+                        <div class="input-group">
+                            <input type="text" placeholder="搜索" class="form-control" id="jstree-search">
+                        </div>
+                        <div class="well">
+                            <div id="jstree-tree"></div>
+                        </div>
+                    </div>
+                    <div class="col-sm-7" id="jstree-show">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    //initialization jstree
+    var jstreeContainer = "#jstree-tree";
+    var jstreeSearcher = "#jstree-search";
+    var jstreeShow = "#jstree-show";
+
+    function newsTypeTreeInit() {
+        //绑定jstree
+        $(jstreeContainer).jstree({
+                    'core': {
+                        'check_callback': true,
+                        'data': {
+                            "url": '{:U("content")}',
+                            "dataType": 'json',
+                            "method": 'POST',
+                        }
+                    },
+                    'plugins': ['types', 'search', 'contextmenu'],
+                    'contextmenu': {
+                        'items': getContextMenu
+                    },
+                    "search": {
+                        "show_only_matches": true
+                    },
+                    'types': {
+                        'default': {
+                            'icon': 'fa fa-folder'
+                        },
+                        'html': {
+                            'icon': 'fa fa-file-code-o'
+                        },
+                        'svg': {
+                            'icon': 'fa fa-file-picture-o'
+                        },
+                        'css': {
+                            'icon': 'fa fa-file-code-o'
+                        },
+                        'img': {
+                            'icon': 'fa fa-file-image-o'
+                        },
+                        'js': {
+                            'icon': 'fa fa-file-text-o'
+                        }
+                    }
+                })
+                .on('changed.jstree', function (e, data) {
+                    if (event.type == "contextmenu") return;
+                    if (data && data.selected && data.selected.length) {
+                        if (data.selected.join(":") === "-1") return;
+                        util.reloadContent('{:U("detail")}', { id: data.selected.join(":") }, $(jstreeShow));
+                    }
+                    else {
+                        $(jstreeShow).html("");
+                    }
+                });
+
+        //绑定搜索事件
+        var to = undefined;
+        $(jstreeSearcher).keyup(function () {
+            if (to) { clearTimeout(to); }
+            to = setTimeout(function () {
+                var v = $(jstreeSearcher).val();
+                $.jstree.defaults.search.show_only_matches = true;
+                $(jstreeContainer).jstree(true).search(v);
+            }, 250);
+        });
+    }
+
+    //生成右击菜单
+    function getContextMenu(node) {
+        var contextMenu = {
+            "add": {
+                "separator_before": false,
+                "separator_after": false,
+                "_disabled": false, //(this.check("rename_node", data.reference, this.get_parent(data.reference), "")),
+                "label": "新增新闻分类",
+                "icon": "fa fa-plus",
+                "action": function (data) {
+                    util.reloadContent('{:U("add")}', { id: node.id }, $(jstreeShow));
+                }
+            },
+            "modify": {
+                "separator_before": false,
+                "separator_after": false,
+                "_disabled": false,
+                "label": "修改新闻分类",
+                "icon": "fa fa-pencil",
+                "action": function (data) {
+                    util.reloadContent('{:U("edit")}', { id: node.id }, $(jstreeShow));
+                }
+            },
+            "delete": {
+                "separator_before": false,
+                "separator_after": false,
+                "_disabled": false,
+                "label": "删除新闻分类",
+                "icon": "fa fa-trash",
+                "action": function (data) {
+                    var inst = $.jstree.reference(data.reference),
+                            obj = inst.get_node(data.reference);
+
+                    $.confirm({
+                        title: "删除操作提示",
+                        text: "确定要删除新闻分类[" + node.text + "]及其子分类吗？",
+                        confirm: function (button) {
+                            util.ajax({
+                                url: '{:U("doDelete")}' + "?id=" + node.id,
+                                method: "GET",
+                                success: function (data) {
+                                    util.ajaxJsonComplete(data, function () {
+                                        if (inst.is_selected(obj)) {
+                                            inst.delete_node(inst.get_selected());
+                                        }
+                                        else {
+                                            inst.delete_node(obj);
+                                        }
+                                    });
+                                },
+                                error: util.ajaxJsonComplete
+                            });
+                        },
+                        cancel: function (button) {
+                            util.tips("取消删除新闻分类操作。", "info");
+                        },
+                        confirmButton: "确定",
+                        cancelButton: "取消"
+                    });
+                }
+            }
+        };
+        if (node.id == "-1") {
+            contextMenu.delete = undefined;
+            contextMenu.modify = undefined;
+        }
+        return contextMenu;
+    }
+    function refresh() {
+        $.jstree.reference(jstreeContainer).refresh();
+    }
+
+    $(function () { newsTypeTreeInit(); })
+</script>

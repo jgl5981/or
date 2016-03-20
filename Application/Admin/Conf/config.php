@@ -12,9 +12,9 @@ return array(
         '__TITLE__' => "网站标题",
         '__KEYWORD__' => "网站关键字",
         '__DESCRIPTION__' => "网站描述",
-
+        '__PICTURE__' => __ROOT__ . '/Uploads/Picture',
     ),
-    //endregion
+
 
     //region 数据库配置
     'DB_TYPE' => 'mysql', // 数据库类型

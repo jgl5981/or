@@ -1,0 +1,98 @@
+<div class="row">
+    <div class="col-lg-12">
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
+                <h5>新闻详细</h5>
+                <div class="ibox-tools">
+                    <a href="#" data-url="{:U('index')}" class="btn btn-primary btn-xs">返回列表</a>
+                </div>
+            </div>
+            <div class="ibox-content">
+                <div class="tab-content">
+                    <div role="tabpanel" class="tab-pane active" id="info">
+                        <div class="form-horizontal">
+                            <div class="form-group"></div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">新闻标题</label>
+                                <div class="col-sm-10">
+                                    <p class="form-control-static">
+                                        {$info.title}
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">新闻类别</label>
+                                <div class="col-sm-10">
+                                    <p class="form-control-static">
+                                        {$info.type_name}
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">发布用户</label>
+                                <div class="col-sm-10">
+                                    <p class="form-control-static">
+                                        {$info.user_name}
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">新闻图片</label>
+                                <div class="col-sm-10">
+                                    <volist name="list" id="vo">
+                                    <img src="__PICTURE__/{$vo.path}" alt="" class="img-thumbnail border-color-green" width="150px" height="150px">
+                                    </volist>
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">新闻简介</label>
+                                <div class="col-sm-10">
+                                    <p class="form-control-static">
+                                       {$info.short_content}
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">新闻标签</label>
+                                <div class="col-sm-10">
+                                    <p class="form-control-static">
+                                        {$info.tag}
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">新闻内容</label>
+                                <div class="col-sm-10" id="summernote">
+                                    <p class="form-control-static">
+                                        {$info.content}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        $(function () {
+            //region 跳转回首页
+            $(".ibox-tools a").on("click", function (event) {
+                var url = $(this).attr("data-url");
+                if (url == undefined || url == "") return;
+                util.reloadContent(url);
+            })
+            //endregion
+
+            var e = "#summernote"
+            var html = $(e).html(util.ecodeTextToHtml($(e).text())).html();
+            $(e).html(html);
+        });
+    </script>
+</div>

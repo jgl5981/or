@@ -1,0 +1,213 @@
+<taglib name='cx,html'/>
+<div class="row">
+    <div class="col-lg-12">
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
+                <h5>编辑新闻</h5>
+
+                <div class="ibox-tools">
+                    <a href="#" data-url="{:U('index')}" class="btn btn-primary btn-xs">返回列表</a>
+                </div>
+            </div>
+            <div class="ibox-content">
+                <form id="userAdd" action="{:U('doEdit')}" data-ajax="true" class="form-horizontal"
+                      data-ajax-success="ajaxJsonComplete"
+                      data-ajax-failure="ajaxJsonComplete" method="post">
+
+                    <div class="form-group"></div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">新闻标题</label>
+
+                        <div class="col-sm-5">
+                            <input type="hidden" name="id" value="{$info.id}"/>
+                            <input type="text" name="title" class="form-control" value="{$info.title}"/>
+                        </div>
+                    </div>
+                    <div class="hr-line-dashed"></div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">新闻类别</label>
+
+                        <div class="col-sm-5">
+                            <html:select name="type_id" options="list" first="请选择新闻类别" selected="info[type_id]"
+                                         style="form-control"/>
+                        </div>
+                    </div>
+                    <div class="hr-line-dashed"></div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">新闻图片</label>
+
+                        <div class="col-sm-5">
+                            <div id="dropzone">
+                                <input type="text" name="image" value="{$info.image}"
+                                       style="width:1px;height:1px;border:0"/>
+
+                                <div id="dropzone-upload">
+                                    <div class="dz-message">
+                                        <button type="button" class="btn btn-primary btn-xs">上传图片
+                                        </button>
+                                    </div>
+                                </div>
+                                <div id="dropzone-preview" class="dropzone"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="hr-line-dashed"></div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">新闻简介</label>
+
+                        <div class="col-sm-5">
+                            <input type="text" name="short_content" class="form-control" value="{$info.short_content}"/>
+                        </div>
+                    </div>
+                    <div class="hr-line-dashed"></div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">标签</label>
+
+                        <div class="col-sm-5">
+                            <input type="text" name="tag" class="form-control" value="{$info.tag}"/>
+                        </div>
+                    </div>
+                    <div class="hr-line-dashed"></div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">新闻内容</label>
+
+                        <div class="col-sm-8">
+                            <input type="hidden" name="content" value="{$info.content}"/>
+
+                            <div id="summernote">{$info.content}</div>
+                        </div>
+                    </div>
+                    <div class="hr-line-dashed"></div>
+                    <div class="form-group">
+                        <div class="col-sm-2 col-md-offset-2">
+                            <button type="submit" class="btn btn-primary">保存</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+
+        //region 跳转回首页
+        $(".ibox-tools a").on("click", function (event) {
+            var url = $(this).attr("data-url");
+            if (url == undefined || url == "") return;
+            util.reloadContent(url);
+        })
+        //endregion
+
+        //region 富文本编辑器
+        $('#summernote').html(util.ecodeTextToHtml($('#summernote').text()));
+
+        //加载富文本编辑器
+        $('#summernote').summernote({
+            height: 300,
+            lang: 'zh-CN',
+            onChange: function (contents, $editable) {
+                $("[name='content']").val(util.ecodeTextToHtml(contents));
+            },
+            onImageUpload: function (files) {
+                sendFile(files, this);
+            }
+        });
+
+        //上传富文本编辑器里面的图片
+        function sendFile(files, editor) {
+            var data = new FormData();
+            var hasFile = false;
+            for (var k = 0; k < files.length; k++) {
+                var file = files[k];
+
+                var filename = false;
+                try {
+                    filename = file['name'];
+                } catch (e) {
+                    filename = false;
+                }
+                //防止已上传的图片在编辑器内拖拽引发第二次上传导致的提示错误
+                if (!filename) {
+                    continue;
+                }
+
+                data.append("file" + k, file);
+                hasFile = true;
+            }
+
+            if (!hasFile) {
+                return false;
+            }
+            $.ajax({
+                data: data,
+                type: "POST",
+                url: '{:U("uploadImage")}',
+                cache: false,
+                contentType: false,
+                processData: false,
+                success: function (data) {
+                    if (data.code == 1) {
+                        debugger;
+                        for (var i = 0; i < data.data.length; i++) {
+                            debugger;
+                            $('#summernote').summernote("insertImage", data.data[i], 'filename');
+                        }
+                        util.tips(data.message, "success");
+                    }
+                    else {
+                        util.tips(data.message, "warning");
+                    }
+                },
+                error: function () {
+                    util.tips("上传失败", "warning");
+                }
+            });
+        }
+
+        //endregion
+
+        //region 上传图片
+        var uploadManager = util.upload({
+            //上传控件容器
+            containerId: "dropzone",
+            //是否启用移除按钮
+            removeLink: true,
+            //请求图片保存的服务端地址
+            saveUrl: '{:U("doAddImage")}',
+            //图片保存完成后，需要保存的数据主键[格式","分隔]地址的input隐藏域
+            saveInput: $("[name=image]"),
+            //上传文件的后缀格式
+            fileExtesions: ["jpg", "png", "jpeg"]
+        });
+        //拿到这个控件对象
+        var myDropzone = uploadManager.dropzone;
+
+        var files = jQuery.parseJSON('{$images}');
+        //显示图片
+        if (files && files.length > 0) {
+            var existingFileCount = 0;
+            for (var i in files) {
+                // 创建显示的图片文件
+                var file = files[i];
+
+                var filePath = file.path;
+                file.name = filePath.split('/').pop();
+                //数据库并没有保存图片的大小,所以随便设置一个值
+                var mockFile = {name: file.name, size: 5000};
+                myDropzone.emit("addedfile", mockFile);
+                myDropzone.emit("thumbnail", mockFile, file.path);
+                myDropzone.emit("complete", mockFile);
+                //加入到 saveInput 值
+                uploadManager.addImageElement({id: file.path, name: file.name, size: 5000});
+                //累计上传文件的数量
+                existingFileCount++;
+            }
+            //设置限制上传文件的数量
+            myDropzone.options.maxFiles = myDropzone.options.maxFiles - existingFileCount;
+        }
+        //endregion
+
+    });
+</script>

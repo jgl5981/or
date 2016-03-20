@@ -79,8 +79,8 @@ class BaseController extends Controller
         $code = $code > 1 ? 1 : $code;
         //坑爹的三目运算符,我是日了狗了
         $message = "";
-        if($code == 1) $message = $sMessage;
-        if($code == 0) $message = $fMessage;
+        if ($code == 1) $message = $sMessage;
+        if ($code == 0) $message = $fMessage;
 
         $this->ajaxReturn(array("code" => $code, "message" => $message, "callback" => $callback, "data" => $data, "redirect" => $redirect));
     }
@@ -114,7 +114,7 @@ class BaseController extends Controller
      * @param string $message 重定向跳转时显示的信息
      * @param string $redirect 重定向地址
      */
-    public  function  redirectReturn($message = "操作失败", $redirect = "")
+    public function  redirectReturn($message = "操作失败", $redirect = "")
     {
         $this->ajaxReturn(array("code" => -1, "message" => $message, "redirect" => $redirect));
     }
