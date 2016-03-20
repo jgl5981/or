@@ -94,12 +94,8 @@ class AuthorityController extends BaseController
         $authority = D("Authority");
         $info = $authority->where("id=$id")->find();
         $list = $authority->field("id, menu_name")->select();
-        $data = array();
-        foreach ($list as $key => $val) {
-            $data[$val["id"]] = $val["menu_name"];
-        }
-        array_unshift($list, array("id" => -1, "menu_name" => "顶级菜单"));
-        $this->assign("list", $data);
+        $dataList = array_column($list,'menu_name','id' );
+        $this->assign("list", $dataList);
         $this->assign("is_enable_link_list", array(1 => "是", 0 => "否"));
         $this->assign("info", $info);
         $this->display();

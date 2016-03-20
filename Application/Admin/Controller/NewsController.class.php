@@ -16,11 +16,8 @@ class NewsController extends BaseController
     {
         $authority = D("NewsType");
         $list = $authority->field("id, name")->select();
-        $data = array();
-        foreach ($list as $key => $val) {
-            $data[$val["id"]] = $val["name"];
-        }
-        $this->assign("list", $data);
+        $typeList = array_column($list,'name', 'id');
+        $this->assign("list", $typeList);
         $this->display();
 
     }
@@ -48,11 +45,8 @@ class NewsController extends BaseController
     {
         $newsType = D("NewsType");
         $list = $newsType->field("id, name")->select();
-        $data = array();
-        foreach ($list as $key => $val) {
-            $data[$val["id"]] = $val["name"];
-        }
-        $this->assign("list", $data);
+        $typeList = array_column($list,'name', 'id');
+        $this->assign("list", $typeList);
         $this->display();
     }
 
@@ -82,10 +76,7 @@ class NewsController extends BaseController
         $newsType = D("NewsType");
 
         $list = $newsType->field("id, name")->select();
-        $typeData = array();
-        foreach ($list as $key => $val) {
-            $typeData[$val["id"]] = $val["name"];
-        }
+        $typeList = array_column($list,'name', 'id');
         $info = $news->where("id=$id")->find();
 
         $imageList = $newsImage->where("news_id=$id")->select();
@@ -98,7 +89,7 @@ class NewsController extends BaseController
             array_push($imageData, $image);
         }
         $info["image"] = trim($imageString, ",");
-        $this->assign("list", $typeData);
+        $this->assign("list", $typeList);
         $this->assign("images", json_encode($imageData));
         $this->assign("info", $info);
         $this->display();
@@ -167,7 +158,8 @@ class NewsController extends BaseController
         $info = $upload->upload();
         if (!$info) {
             $this->errorReturn($upload->getError());
-        } else {// 上传成功
+        } else {
+            // 上传成功
             $data = array();
             foreach ($info as $file) {
                 array_push($data, (Config::$uploadConfig["lookPath"] . $file["savepath"] . $file["savename"]));
