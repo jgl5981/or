@@ -2,6 +2,7 @@
 
 namespace Admin\Controller;
 
+use Admin\Common\Config;
 use Think\Controller;
 
 
@@ -11,30 +12,66 @@ use Think\Controller;
  */
 class BaseController extends Controller
 {
+    protected function _initialize()
+    {
+        $user = session(Config::$session_user);
+        if (empty($user) && strtoupper(CONTROLLER_NAME) != "INDEX") {
+            $redirect = U("/Admin/Index/login");
+            $this->redirectReturn("成功退出...", $redirect);
+        } else {
+            if (strtoupper(CONTROLLER_NAME) != "INDEX") {
+                $authorityList = $this->getAuthority();
+                $currentController = MODULE_NAME . "/" . CONTROLLER_NAME;
+                $hasAuthority = false;
+                foreach ($authorityList as $authority) {
+                    if (stripos($authority["link"], $currentController) > -1) {
+                        $hasAuthority = true;
+                        break;
+                    }
+                }
+                if (!$hasAuthority) {
+                    $redirect = U("/Admin/Index/noAuthority");
+                    $this->redirectReturn("权限不足...", $redirect);
+                }
+            }
+        }
+    }
 
+    public function deleteAuthority()
+    {
+        $user = session(Config::$session_user);
+        S(Config::$cache_authority, null);
+    }
+
+    public function getAuthority()
+    {
+        $user = session(Config::$session_user);
+        $authority = S(Config::$cache_authority);
+        if (empty($authority)) {
+            $authority = D("authority");
+            $authority = $authority->getAuthorityByuserId($user["id"]);
+            S(Config::$cache_authority, $authority);
+        }
+        return $authority;
+    }
+
+    //region session
     public function  index()
     {
         $this->display();
     }
 
-    //region 用户存入Session, 从session获取用户, 注销用户
-    /**
-     * @var string 用户Session key
-     */
-    private static $session_user = "user";
-
     public function  saveUser($user)
     {
         if (isset($user)) {
-            $this->user = $user;
-            session($this->session_user, $user);
+            session(Config::$session_user, $user);
         }
     }
 
     public function getUser()
     {
-        $user = session($this->session_user);
-        if (is_null($user)) {
+        $user = session(Config::$session_user);
+        if (empty($user)) {
             $this->redirect("/Admin/Index/login");
         } else {
             return $user;
@@ -43,7 +80,7 @@ class BaseController extends Controller
 
     public function deleteUser()
     {
-        session($this->session_user, null);
+        session(Config::$session_user, null);
     }
     //endregion
 

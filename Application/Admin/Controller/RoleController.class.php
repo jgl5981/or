@@ -102,11 +102,15 @@ class RoleController extends BaseController
         $authorityGrant = D("authority_grant");
         if (empty($authorityIds)) {
             $authorityGrant->where("role_id=$roleId")->delete();
+            //清除缓存
+            $this->deleteAuthority();
             $this->successReturn("授权成功！");
         } else {
             $authorityIdList = explode(',', $authorityIds);
             $state = $authorityGrant->doGrant($roleId, $authorityIdList);
             if ($state) {
+                //清除缓存
+                $this->deleteAuthority();
                 $this->successReturn("授权成功！");
             } else {
                 $this->successReturn("授权失败！");

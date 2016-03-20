@@ -63,6 +63,8 @@ class AuthorityController extends BaseController
             }
             $state = $authority->addNode();
             if ($state) {
+                //清除缓存
+                $this->deleteAuthority();
                 $this->successReturn("添加菜单成功", "refresh");
             } else {
                 $this->errorReturn("添加菜单失败！", "refresh");
@@ -77,6 +79,8 @@ class AuthorityController extends BaseController
         $authority = D("Authority");
         $state = $authority->deleteAuthority($id);
         if ($state) {
+            //清除缓存
+            $this->deleteAuthority();
             $this->successReturn("删除菜单成功！", "refresh");
         } else {
             $this->errorReturn("删除菜单失败", "refresh");
@@ -113,6 +117,8 @@ class AuthorityController extends BaseController
             }
             $state = $authority->updateNode();
             if ($state) {
+                //清除缓存
+                $this->deleteAuthority();
                 $this->successReturn("修改菜单成功", "refresh");
             } else {
                 $this->errorReturn("添加菜单失败！", "refresh");

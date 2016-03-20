@@ -12,10 +12,8 @@ class MenuWidget extends \Admin\Controller\BaseController
 {
     public function menu()
     {
-        $userId = 119;
-        $authority = D("authority");
         $dataList = array();
-        $authorityList = $authority->getAuthorityByuserId($userId);
+        $authorityList = $this->getAuthority();
         foreach ($authorityList as $authority) {
             if ($authority["parent_id"] == "-1") {
                 array_push($dataList, $this->createChildren($authority, $authorityList));

@@ -42,4 +42,9 @@ class IndexController extends BaseController
         $redirect = U("login");
         $this->redirectReturn("成功退出...", $redirect);
     }
+
+    public function noAuthority()
+    {
+        $this->display();
+    }
 }

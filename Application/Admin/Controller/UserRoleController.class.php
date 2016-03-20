@@ -67,6 +67,8 @@ class UserRoleController extends BaseController
             $this->errorReturn($userRole->getError());
         } else {
             $n = $userRole->add();
+            //清除缓存
+            $this->deleteAuthority();
             $this->successReturn("用户角色授权成功", "refresh");
         }
     }
@@ -77,6 +79,8 @@ class UserRoleController extends BaseController
         $role_id = I("role_id");
         $userRole = D("UserRole");
         $n = $userRole->where("role_id = $role_id AND user_id = $user_id")->delete();
+        //清除缓存
+        $this->deleteAuthority();
         $this->successReturn("取消用户角色授权成功", "refresh");
     }
 

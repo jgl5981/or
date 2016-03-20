@@ -9,6 +9,7 @@ namespace Admin\Common;
  */
 class Config
 {
+    //图片上传配置
     public static $uploadConfig = array(
         'maxSize' => 3145728,
         'lookPath' => '/Uploads/Picture/',
@@ -19,6 +20,9 @@ class Config
         'autoSub' => true,
         'subName' => array('date', 'Y-m-d'),
     );
+
+    public static $session_user = "user";
+    public static $cache_authority = "authority";
 }
 
 ?>
