@@ -18,10 +18,10 @@ return array(
 
     //region 数据库配置
     'DB_TYPE' => 'mysql', // 数据库类型
-    'DB_HOST' => 'localhost', // 服务器地址
-    'DB_NAME' => 'or', // 数据库名
-    'DB_USER' => 'root', // 用户名
-    'DB_PWD' => 'root', // 密码
+    'DB_HOST' => '192.168.1.13', // 服务器地址
+    'DB_NAME' => 'd84398c0976f34882945bfb0060e4c3cc', // 数据库名
+    'DB_USER' => '3172528a-11c9', // 用户名
+    'DB_PWD' => '67bbe0c8-36f0', // 密码
     'DB_PORT' => 3306, // 端口
     'DB_PREFIX' => 'or_', // 数据库表前缀
     'DB_CHARSET' => 'utf8', // 字符集
